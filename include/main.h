@@ -11,6 +11,13 @@
 #include "SRT.h"
 #include "HRN.h"
 
+typedef struct Process{
+    int index;
+    int arrival;
+    int working;
+    int prioity;
+};
+
 void error(char * message) {
     fprintf(stderr, "%s\n", message);
     exit(1);

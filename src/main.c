@@ -17,7 +17,15 @@ int main() {
         error("file not found");
     printf("file found!");
 
-    
+    //Process P[5];
+
+    int tmp1, tmp2, tmp3, tmp4;
+    while(!feof(fp)) {
+        fscanf(fp, "%d %d %d %d\n", &tmp1, &tmp2, &tmp3, &tmp4);
+        
+    }
+
+
 
     return 0;
 }
