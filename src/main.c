@@ -8,7 +8,10 @@
  * @copyright Copyright (c) 2023 Minsu Bak
  * 
  */
-#include <main.h>
+#include "main.h"
+#include "process.h"
+#include "FCFS.h"
+#include <time.h>
 
 int main() {
     
@@ -17,15 +20,35 @@ int main() {
         error("file not found");
     printf("file found!");
 
-    //Process P[5];
-
-    int tmp1, tmp2, tmp3, tmp4;
+    int tmp, cnt = 0;
     while(!feof(fp)) {
-        fscanf(fp, "%d %d %d %d\n", &tmp1, &tmp2, &tmp3, &tmp4);
-        
+        fscanf(fp, "%d ", &tmp);
+        fscanf(fp, "%d ", &tmp);
+        fscanf(fp, "%d ", &tmp);
+        fscanf(fp, "%d\n", &tmp);
+        cnt++;
+    } rewind(fp);
+    
+    Process *p = malloc(sizeof(Process)*cnt);
+    cnt = 0;
+
+    while(!feof(fp)) {
+        fscanf(fp, "%d ", &tmp);
+        p[cnt].index = tmp;
+        fscanf(fp, "%d ", &tmp);
+        p[cnt].arrival = tmp;
+        fscanf(fp, "%d ", &tmp);
+        p[cnt].working = tmp;
+        fscanf(fp, "%d\n", &tmp);
+        p[cnt].prioity = tmp;
+        cnt++;
     }
+    // FCFS
+    FCFS(*p);
 
 
-
+    // Memory Allocate Disable
+    free(p);
+    fclose(fp);
     return 0;
 }
