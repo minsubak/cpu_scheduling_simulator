@@ -37,7 +37,7 @@
  * @brief First Come First Served
  * 
  * @param p Process Structer Pointer
- * @param n Prcess count
+ * @param n Process count
  */
 void FCFS(Process *p, int n) {
 
