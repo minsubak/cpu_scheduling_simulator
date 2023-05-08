@@ -1,8 +1,7 @@
 /**
  * @file    main.h
  * @author  Mindou (minsu5875@naver.com)
- * @brief   외부 라이브러리 및 기타 함수
- *          묶음 헤더 파일(single header)
+ * @brief   external & user define library / etc. function package header
  * @version 0.1
  * @date    2023-05-08
  * 
@@ -13,13 +12,24 @@
 #ifndef MAIN_H
 #define MAIN_H
 
+// external libaray & user define library
 #include "FCFS.h"
-/* #include "SJF.h"
+/* 
+#include "SJF.h"
 #include "NPP.h"
 #include "PP.h"
 #include "RR.h"
 #include "SRT.h"
-#include "HRN.h" */
+#include "HRN.h"
+*/
+
+/**
+ * @brief main.h variable info
+ *  
+ *  type        name        pointer     info
+ *  char        message     y           message with error info
+ * 
+ */
 
 /**
  * @brief print error and exit

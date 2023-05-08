@@ -1,7 +1,7 @@
 /**
  * @file    main.c
- * @author  mindou (minsu5875@naver.com)
- * @brief   Operating System-Term Project: CPU_SCHEDULER
+ * @author  Mindou (minsu5875@naver.com)
+ * @brief   Operating System-Term Project: CPU_Scheduler Simulator
  * @version 0.1
  * @date    (first date: 2023-04-26)
  * 
@@ -10,7 +10,6 @@
  */
 
 // standard library
-#include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -53,11 +52,6 @@ int main() {
         i++;
     }
 
-    // test print text
-    for(i = 0; i < count; i++)
-        printf("%d\t%s\t%d\t%d\t%d\n", i, p[i].pID, p[i].arrival, p[i].working, p[i].prioity);
-
-        
     // First Come First Served
     FCFS(p, count);
 
@@ -84,3 +78,9 @@ int main() {
     fclose(fp);
     return 0;
 }
+
+    // test print text
+/*     
+    for(i = 0; i < count; i++)
+        printf("%d\t%s\t%d\t%d\t%d\n", i, p[i].pID, p[i].arrival, p[i].working, p[i].prioity);
+ */

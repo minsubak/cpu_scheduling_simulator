@@ -1,7 +1,8 @@
 /**
  * @file    FCFS.h
  * @author  Mindou (minsu5875@naver.com)
- * @brief   CPU 스케줄링 시뮬레이터-비선점형 스케줄링 기법
+ * @brief   CPU schedule simulator
+ *          non preemeption schuduling method
  * @version 0.1
  * @date    2023-05-03
  * 
@@ -59,10 +60,11 @@ void FCFS(Process *p, int n) {
         enqueue(&q, p[i]);
 
     printf("FCFS Scheduler test print\n");
-    printf("No.\tArrival\tWorking\tPrioity\n");
+    printf("Index\tNo.\tArrival\tWorking\tPrioity\n");
     for(int i = 0; i < n; i++) {
         tmp = dequeue(&q);        
-        printf("%s\t%d\t%d\t%d\n", 
+        printf("%d\t%s\t%d\t%d\t%d\n", 
+        i,
         tmp.pID, 
         tmp.arrival, 
         tmp.working, 
