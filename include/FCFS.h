@@ -47,14 +47,17 @@ void FCFS(Process *p, int n) {
         printf("%d\t%d\t%d\t%d\n", p[i].index, p[i].arrival, p[i].working, p[i].prioity);
     }
 
-    int arrival_array[n];
+    int arrival_array[5]; // arrival sort array
 
     for(int i = 0; i < n; i ++)
         arrival_array[i] = p[i].arrival;
 
-    qsort(arrival_array, sizeof(arrival) / sizeof(int), sizeof(int), compare);
+    qsort(arrival_array, sizeof(arrival_array) / sizeof(int), sizeof(int), compare);
 
-
+    printf("\n");
+    for(int i = 0; i < n; i++)
+        printf("%d\t", arrival_array[i]);
+    
 }
 
 #endif

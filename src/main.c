@@ -52,9 +52,26 @@ int main() {
     }
 
     printf("\n");
-    // FCFS
+    // First Come First Served
     FCFS(p, cnt);
 
+    // Shortest Job First
+    // SJF(p, cnt);
+
+    // Non-Preemption Prioity
+    // NPP(p, cnt);
+    
+    // Preemption Prioity
+    // PP(p, cnt);
+
+    // Round-Robin
+    // RR(p, cnt);
+
+    // Shortest Remaining Time
+    // SRT(p, cnt);
+
+    // Highest Responese Ratio Next
+    // HRN(p, cnt);
 
     // Memory Allocate Disable
     free(p);
