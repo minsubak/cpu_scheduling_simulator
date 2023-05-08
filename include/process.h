@@ -15,27 +15,47 @@
  * @brief process.h variable info
  *  
  *  type        name        pointer     info
- *  #define     LEN         n           process no. array size
- *  char        pID         y           process no.
+ *  int         processID   n           process no.
  *  int         arrival     n           process arrival time
- *  int         working     n           process working time
+ *  int         burst       n           process burst time
+ *  int         remain      n           process remain time
  *  int         prioity     n           process prioity
+ *  int         turnaround  n           save process turnaround time
+ *  int         response    n           save process response time
+ *  int         waiting     n           save process waiting time
+ *  int         terminate   n           process terminate flag(0|1)
+ *  Process     original    y           original process structure
+ *  Process     target      y           overwrite target
  * 
  */
 
-#define LEN 10      // process no. array size
 
 /**
  * @brief structure for process
  * 
  */
 typedef struct Process{
-    char pID[LEN];  // process no.
+    int processID;  // process no.
     int arrival;    // process arrival time
-    int working;    // process working time
+    int burst;      // process burst time
+    int remain;     // process remain time()
     int prioity;    // process prioity
+    int turnaround; // save process turnaround time
+    int response;   // save process response time
+    int waiting;    // save process waiting time
+    int terminate;  // process terminate flag(0|1)
 } Process;
 
-
+/**
+ * @brief           overwrite original to target
+ * 
+ * @param original  original process structure
+ * @param target    overwrite target
+ * @return Process* 
+ */
+Process* overwrite_process(Process* original, Process *target) {
+    target = original;
+    return target;
+}
 
 #endif

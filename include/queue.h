@@ -1,13 +1,13 @@
 /**
  * @file    queue.h
  * @author  Mindou (minsu5875@naver.com)
- * @brief   queue 자료구조
+ * @brief   queue structure
  *  
- *          [개요]
- *          기본 queue 자료구조
+ *          [summary]
+ *          basic queue structure / edit for CPU scheduler simulator
  * 
  * @version 0.1
- * @date    last update: 2023-05-03
+ * @date    last update: 2023-05-09
  * 
  * @copyright Copyright (c) 2022 Minsu Bak
  * 
@@ -19,11 +19,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// external libraray
+// external libraray & user define library
 #include "process.h"
 
-#define BUCKETS 10
-#define DIGITS  4
+/**
+ * @brief queue.h variable info
+ * 
+ *  type        name        pointer     info
+ *  #define     MAX         n           queue storage size
+ *  int         front       n           queue front data flag
+ *  int         rear        n           queue rear data flag
+ *  Process     queue       y           structre queue array for Process data storage
+ *  QueueType   q           y           structure for queue data storage
+ *  Process     item        n           insert target
+ * 
+ */
+
 #define MAX     10
 
 typedef struct QueueType {
@@ -32,18 +43,18 @@ typedef struct QueueType {
 }QueueType;
 
 /**
- * @brief   queue 초기화
+ * @brief   init queue
  * 
- * @param q queue 구조체 포인터
+ * @param q pointer for queue structure
  */
 void init_queue(QueueType *q) {
     q->front = q->rear = 0;
 }
 
 /**
- * @brief   queue의 비움 상태 확인
+ * @brief   check the queue status is empty
  * 
- * @param q queue 구조체 포인터
+ * @param q pointer for queue structure
  * @return  int 
  */
 int is_empty_q(QueueType *q) {
@@ -51,9 +62,9 @@ int is_empty_q(QueueType *q) {
 }
 
 /**
- * @brief   queue의 꽉 찬 상태 확인
+ * @brief   check the queue status is full
  * 
- * @param q queue 구조체 포인터
+ * @param q pointer for queue structure
  * @return  int 
  */
 int is_full_q(QueueType *q) {
@@ -61,12 +72,12 @@ int is_full_q(QueueType *q) {
 }
 
 /**
- * @brief   queue에 새 요소 삽입
+ * @brief   insert new process data into queue
  * 
- * @param q     queue 구조체 포인터
- * @param item  queue에 새로 삽입할 데이터
+ * @param q     pointer for queue structure
+ * @param item  insert target
  */
-void enqueue(QueueType *q, Process item) {
+void ready_queue(QueueType *q, Process item) {
     if(is_full_q(q)) {
         fprintf(stderr, "queue is full!\n");
         exit(1);
@@ -76,17 +87,28 @@ void enqueue(QueueType *q, Process item) {
 }
 
 /**
- * @brief   queue에 기존 요소 추출
+ * @brief   extract process data from the queue
  * 
- * @param q queue 구조체 포인터
- * @return  element 
+ * @param q pointer for queue structure
+ * @return  Process
  */
-Process dequeue(QueueType *q) {
+Process* dispatch(QueueType *q) {
     if(is_empty_q(q)) {
         fprintf(stderr, "queue is empty!\n");
         return;
     }
     q->front = (q->front + 1) % MAX;
+    return &q->queue[q->front];
+}
+
+/**
+ * @brief   check process data from the queue
+ * 
+ * @param q pointer for queue structure
+ * @return Process 
+ */
+Process check(QueueType *q) {
+    if(is_empty_q(q)) return;
     return q->queue[q->front];
 }
 

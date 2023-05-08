@@ -22,7 +22,8 @@
  *  
  *  type        name        pointer     info
  *  FILE        fp          y           file pointer for file I/O and management
- *  Process     p           y           structure for process data storage
+ *  Process     o           y           structure for process data storage(original)
+ *  Process     t           y           structure for process data storage(target)
  *  int         i           n           multipurpose utilization variable
  *  int         count       n           save process count
  *  
@@ -31,29 +32,37 @@
 int main() {
     
     // search and load "data.txt" files with process data
+
     FILE *fp = fopen("data.txt", "r");
     if(fp == NULL) error("file not found");
-    else printf("file found!\n");
+    else printf("file found!\n\n");
 
     // read process count and allocate memory
+
     int count = 0;
     fscanf(fp, "%d\n", &count);
-    Process *p = malloc(sizeof(Process)*count);
+    Process *o = malloc(sizeof(Process)*count);
+    Process *t = malloc(sizeof(Process)*count);
 
     // read and save process data
+    
     int i = 0;
     while(i < count) {
-        fscanf(fp, "%s %d %d %d\n", 
-         p[i].pID, 
-        &p[i].arrival, 
-        &p[i].working, 
-        &p[i].prioity
+        fscanf(fp, "%d %d %d %d\n", 
+        &o[i].processID, 
+        &o[i].arrival, 
+        &o[i].burst, 
+        &o[i].prioity
         );
+        o[i].remain = o[i].burst;
         i++;
     }
 
+    // overwrite process data
+    t = overwrite_process(o, t);
+
     // First Come First Served
-    FCFS(p, count);
+    FCFS(t, count);
 
     // Shortest Job First
     // SJF(p, count);
@@ -74,7 +83,8 @@ int main() {
     // HRN(p, count);
 
     // memory allocate disable
-    free(p);
+    free(o);
+    free(t);
     fclose(fp);
     return 0;
 }
@@ -82,5 +92,5 @@ int main() {
     // test print text
 /*     
     for(i = 0; i < count; i++)
-        printf("%d\t%s\t%d\t%d\t%d\n", i, p[i].pID, p[i].arrival, p[i].working, p[i].prioity);
+        printf("%d\t%s\t%d\t%d\t%d\n", i+1, o[i].pID, o[i].arrival, o[i].burst, o[i].prioity);
  */
