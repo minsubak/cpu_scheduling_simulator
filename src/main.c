@@ -18,7 +18,7 @@ int main() {
     FILE *fp = fopen("data.txt", "r");
     if(fp == NULL)
         error("file not found");
-    printf("file found!");
+    printf("file found!\n");
 
     int tmp, cnt = 0;
     while(!feof(fp)) {
@@ -29,6 +29,7 @@ int main() {
         cnt++;
     } rewind(fp);
     
+    printf("%d\n", cnt);
     Process *p = malloc(sizeof(Process)*cnt);
     cnt = 0;
 
@@ -43,8 +44,16 @@ int main() {
         p[cnt].prioity = tmp;
         cnt++;
     }
+
+    // file io test
+    printf("main.c file i/o data test\n");
+    for(int i = 0; i < cnt; i++) {
+        printf("%d\t%d\t%d\t%d\n", p[i].index, p[i].arrival, p[i].working, p[i].prioity);
+    }
+
+    printf("\n");
     // FCFS
-    FCFS(*p);
+    FCFS(p, cnt);
 
 
     // Memory Allocate Disable
