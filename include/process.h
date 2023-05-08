@@ -12,18 +12,28 @@
 #define PROCESS_H
 
 /**
- * @brief 프로세스 구조체
+ * @brief process.h variable info
+ *  
+ *  type        name        pointer     info
+ *  #define     LEN         n           process no. array size
+ *  char        pID         y           process no.
+ *  int         arrival     n           process arrival time
+ *  int         working     n           process working time
+ *  int         prioity     n           process prioity
  * 
- * @var index   프로세스 번호
- * @var arrival 프로세스 도착 시간
- * @var working 프로세스 작업 시간
- * @var prioity 프로세스 우선 순위
+ */
+
+#define LEN 10      // process no. array size
+
+/**
+ * @brief structure for process
+ * 
  */
 typedef struct Process{
-    int index;
-    int arrival;
-    int working;
-    int prioity;
+    char pID[LEN];  // process no.
+    int arrival;    // process arrival time
+    int working;    // process working time
+    int prioity;    // process prioity
 } Process;
 
 

@@ -1,15 +1,25 @@
+/**
+ * @file    main.h
+ * @author  Mindou (minsu5875@naver.com)
+ * @brief   외부 라이브러리 및 기타 함수
+ *          묶음 헤더 파일(single header)
+ * @version 0.1
+ * @date    2023-05-08
+ * 
+ * @copyright Copyright (c) 2023 Minsu Bak
+ * 
+ */
+
 #ifndef MAIN_H
 #define MAIN_H
 
-#include <stdio.h>
-#include <stdlib.h>
 #include "FCFS.h"
-#include "SJF.h"
+/* #include "SJF.h"
 #include "NPP.h"
 #include "PP.h"
 #include "RR.h"
 #include "SRT.h"
-#include "HRN.h"
+#include "HRN.h" */
 
 /**
  * @brief print error and exit
@@ -20,27 +30,5 @@ void error(char * message) {
     fprintf(stderr, "%s\n", message);
     exit(1);
 }
-
-/**
- * @brief 오름차순 비교 함수(w. qsort)
- * 
- * @param a compare target a
- * @param b compare target b
- * @return int 
- */
-/* int compare(const void *a, const void *b)
-{
-    // void 포인터를 int 포인터 변환 후 역참조
-    int num1 = *(int *)a;
-    int num2 = *(int *)b;
-
-    if (num1 < num2)    // case: a < b
-        return -1;      // -1 return
-    
-    if (num1 > num2)    // case: a > b
-        return 1;       // 1 return
-    
-    return 0;    // a = b, return 1
-} */
 
 #endif

@@ -15,19 +15,19 @@
 #ifndef QUEUE_H
 #define QUEUE_H
 
+// standard libraray
 #include <stdio.h>
 #include <stdlib.h>
+
+// external libraray
 #include "process.h"
 
 #define BUCKETS 10
 #define DIGITS  4
 #define MAX     10
 
-//typedef int element;
-
 typedef struct QueueType {
     int front, rear;
-    //element queue[MAX];
     Process queue[MAX];
 }QueueType;
 
@@ -44,7 +44,7 @@ void init_queue(QueueType *q) {
  * @brief   queue의 비움 상태 확인
  * 
  * @param q queue 구조체 포인터
- * @return int 
+ * @return  int 
  */
 int is_empty_q(QueueType *q) {
     return (q->front == q->rear);
@@ -54,7 +54,7 @@ int is_empty_q(QueueType *q) {
  * @brief   queue의 꽉 찬 상태 확인
  * 
  * @param q queue 구조체 포인터
- * @return int 
+ * @return  int 
  */
 int is_full_q(QueueType *q) {
     return (q->front == (q->rear+1) % MAX);
@@ -66,7 +66,7 @@ int is_full_q(QueueType *q) {
  * @param q     queue 구조체 포인터
  * @param item  queue에 새로 삽입할 데이터
  */
-void enqueue(QueueType *q, Process item/*, element item*/ ) {
+void enqueue(QueueType *q, Process item) {
     if(is_full_q(q)) {
         fprintf(stderr, "queue is full!\n");
         exit(1);
@@ -79,9 +79,9 @@ void enqueue(QueueType *q, Process item/*, element item*/ ) {
  * @brief   queue에 기존 요소 추출
  * 
  * @param q queue 구조체 포인터
- * @return element 
+ * @return  element 
  */
-/*element*/Process dequeue(QueueType *q) {
+Process dequeue(QueueType *q) {
     if(is_empty_q(q)) {
         fprintf(stderr, "queue is empty!\n");
         return;

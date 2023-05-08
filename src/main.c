@@ -8,72 +8,78 @@
  * @copyright Copyright (c) 2023 Minsu Bak
  * 
  */
+
+// standard library
+#include <time.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+// external library & user define library
 #include "main.h"
 #include "process.h"
-#include "FCFS.h"
-#include <time.h>
+
+/**
+ * @brief main.c variable info
+ *  
+ *  type        name        pointer     info
+ *  FILE        fp          y           file pointer for file I/O and management
+ *  Process     p           y           structure for process data storage
+ *  int         i           n           multipurpose utilization variable
+ *  int         count       n           save process count
+ *  
+ */
 
 int main() {
     
+    // search and load "data.txt" files with process data
     FILE *fp = fopen("data.txt", "r");
-    if(fp == NULL)
-        error("file not found");
-    printf("file found!\n");
+    if(fp == NULL) error("file not found");
+    else printf("file found!\n");
 
-    int tmp, cnt = 0;
-    while(!feof(fp)) {
-        fscanf(fp, "%d ", &tmp);
-        fscanf(fp, "%d ", &tmp);
-        fscanf(fp, "%d ", &tmp);
-        fscanf(fp, "%d\n", &tmp);
-        cnt++;
-    } rewind(fp);
-    
-    printf("%d\n", cnt);
-    Process *p = malloc(sizeof(Process)*cnt);
-    cnt = 0;
+    // read process count and allocate memory
+    int count = 0;
+    fscanf(fp, "%d\n", &count);
+    Process *p = malloc(sizeof(Process)*count);
 
-    while(!feof(fp)) {
-        fscanf(fp, "%d ", &tmp);
-        p[cnt].index = tmp;
-        fscanf(fp, "%d ", &tmp);
-        p[cnt].arrival = tmp;
-        fscanf(fp, "%d ", &tmp);
-        p[cnt].working = tmp;
-        fscanf(fp, "%d\n", &tmp);
-        p[cnt].prioity = tmp;
-        cnt++;
+    // read and save process data
+    int i = 0;
+    while(i < count) {
+        fscanf(fp, "%s %d %d %d\n", 
+         p[i].pID, 
+        &p[i].arrival, 
+        &p[i].working, 
+        &p[i].prioity
+        );
+        i++;
     }
 
-    // file io test
-    printf("main.c file i/o data test\n");
-    for(int i = 0; i < cnt; i++) {
-        printf("%d\t%d\t%d\t%d\n", p[i].index, p[i].arrival, p[i].working, p[i].prioity);
-    }
+    // test print text
+    for(i = 0; i < count; i++)
+        printf("%d\t%s\t%d\t%d\t%d\n", i, p[i].pID, p[i].arrival, p[i].working, p[i].prioity);
 
-    printf("\n");
+        
     // First Come First Served
-    FCFS(p, cnt);
+    FCFS(p, count);
 
     // Shortest Job First
-    // SJF(p, cnt);
+    // SJF(p, count);
 
     // Non-Preemption Prioity
-    // NPP(p, cnt);
+    // NPP(p, count);
     
     // Preemption Prioity
-    // PP(p, cnt);
+    // PP(p, count);
 
     // Round-Robin
-    // RR(p, cnt);
+    // RR(p, count);
 
     // Shortest Remaining Time
-    // SRT(p, cnt);
+    // SRT(p, count);
 
     // Highest Responese Ratio Next
-    // HRN(p, cnt);
+    // HRN(p, count);
 
-    // Memory Allocate Disable
+    // memory allocate disable
     free(p);
     fclose(fp);
     return 0;
