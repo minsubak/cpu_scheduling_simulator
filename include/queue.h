@@ -35,7 +35,7 @@
  * 
  */
 
-#define MAX     10
+#define MAX     20
 
 typedef struct QueueType {
     int front, rear;
@@ -109,7 +109,17 @@ Process* dispatch(QueueType *q) {
  */
 Process check(QueueType *q) {
     if(is_empty_q(q)) return;
-    return q->queue[q->front];
+    return q->queue[(q->front + 1) % MAX];
+}
+
+/**
+ * @brief   sort processes in the queue using with qsort()
+ * 
+ * @param q pointer for queue structure
+ * @param compare 
+ */
+void sort(QueueType *q, int(*compare)(const void* a, const void* b)) {
+    qsort(q->queue + q->front + 1, q->rear-q->front, sizeof(Process), compare);
 }
 
 #endif

@@ -43,9 +43,6 @@
  */
 
 Process result[5];
-double  total_turnaround;   
-double  total_waiting;
-double  total_response;
 
 /**
  * @brief   First Come First Served
@@ -54,6 +51,10 @@ double  total_response;
  * @param n process count
  */
 void FCFS(Process *p, int n) {
+    
+    double  total_turnaround = 0;   
+    double  total_waiting    = 0;
+    double  total_response   = 0;
 
     // sort by arrival
 
@@ -61,9 +62,9 @@ void FCFS(Process *p, int n) {
     for(int i = 0; i < n; i ++)
         for(int j = 0 ; j < i; j++)
             if(p[i].arrival < p[j].arrival) {
-                *temp  = p[i];
-                p[i] = p[j];
-                p[j] = *temp;
+                *temp = p[i];
+                p[i]  = p[j];
+                p[j]  = *temp;
             }
 
     // create ready queue & insert process to ready queue
@@ -77,7 +78,6 @@ void FCFS(Process *p, int n) {
 
     int time_flow = 0; // flow of time in the scheduler
     int terminate = 0; // Number of process terminated
-    
     while(terminate < n) {
         
         // dispatch new PCB
@@ -106,7 +106,7 @@ void FCFS(Process *p, int n) {
     }
 
     //test print
-    printf("FCFS\n");
+    printf("\n\nFCFS\n");
     printf("index\tPID\tArrival\tBurst\tWaiting\tTurnaround\n");
     for(int i = 0; i < n; i++)
         printf("%d\tP%d\t%d\t%d\t%d\t%d\t\n", 

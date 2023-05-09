@@ -15,8 +15,8 @@
 // external library & user define library
 #include "FCFS.h"
 #include "SJF.h"
-/*
 #include "NPP.h"
+/*
 #include "PP.h"
 #include "RR.h"
 #include "SRT.h"
@@ -28,8 +28,9 @@
  *  
  *  type        name        pointer     info
  *  char        message     y           message with error info
- * 
+ *  
  */
+
 
 /**
  * @brief print error and exit

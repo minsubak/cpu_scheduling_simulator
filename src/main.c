@@ -41,34 +41,30 @@ int main() {
 
     int count = 0;
     fscanf(fp, "%d\n", &count);
-    Process *o = malloc(sizeof(Process)*count);
-    Process *t = malloc(sizeof(Process)*count);
+    Process *p = malloc(sizeof(Process)*count);
 
     // read and save process data
     
     int i = 0;
     while(i < count) {
         fscanf(fp, "%d %d %d %d\n", 
-        &o[i].processID, 
-        &o[i].arrival, 
-        &o[i].burst, 
-        &o[i].prioity
+        &p[i].processID, 
+        &p[i].arrival, 
+        &p[i].burst, 
+        &p[i].prioity
         );
-        o[i].remain = o[i].burst;
+        p[i].remain = p[i].burst;
         i++;
     }
 
-    // overwrite process data
-    t = overwrite_process(o, t);
-
     // First Come First Served
-    FCFS(t, count);
+    FCFS(p, count);
 
     // Shortest Job First
-    SJF(t, count);
+    SJF(p, count);
 
     // Non-Preemption Prioity
-    // NPP(p, count);
+    NPP(p, count);
     
     // Preemption Prioity
     // PP(p, count);
@@ -83,14 +79,7 @@ int main() {
     // HRN(p, count);
 
     // memory allocate disable
-    free(o);
-    free(t);
+    free(p);
     fclose(fp);
     return 0;
 }
-
-    // test print text
-/*     
-    for(i = 0; i < count; i++)
-        printf("%d\t%s\t%d\t%d\t%d\n", i+1, o[i].pID, o[i].arrival, o[i].burst, o[i].prioity);
- */

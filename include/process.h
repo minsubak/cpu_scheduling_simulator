@@ -26,9 +26,11 @@
  *  int         terminate   n           process terminate flag(0|1)
  *  Process     original    y           original process structure
  *  Process     target      y           overwrite target
+ *  #define     TIME_SLICE  n           time slice for RR, SRT and HRN
  * 
  */
 
+#define TIME_SLICE  2
 
 /**
  * @brief structure for process
