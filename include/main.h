@@ -12,10 +12,10 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-// external libaray & user define library
+// external library & user define library
 #include "FCFS.h"
-/* 
 #include "SJF.h"
+/*
 #include "NPP.h"
 #include "PP.h"
 #include "RR.h"

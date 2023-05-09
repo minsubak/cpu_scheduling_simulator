@@ -50,8 +50,8 @@ double  total_response;
 /**
  * @brief   First Come First Served
  * 
- * @param p Process Structer Pointer
- * @param n Process count
+ * @param p pointer for process structer
+ * @param n process count
  */
 void FCFS(Process *p, int n) {
 

@@ -65,7 +65,7 @@ int main() {
     FCFS(t, count);
 
     // Shortest Job First
-    // SJF(p, count);
+    SJF(t, count);
 
     // Non-Preemption Prioity
     // NPP(p, count);
