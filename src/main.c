@@ -26,6 +26,7 @@
  *  Process     t           y           structure for process data storage(target)
  *  int         i           n           multipurpose utilization variable
  *  int         count       n           save process count
+ *  int         timeSlice   n           save simulator environment variable basic value
  *  
  */
 
@@ -54,29 +55,37 @@ int main() {
         &p[i].prioity
         );
         p[i].remain = p[i].burst;
+        p[i].timeout = p[i].arrival;
+        p[i].waiting = 0;
+        p[i].execute = 0;
         i++;
     }
 
+    // read simulator environment variable basic value
+
+    int timeSlice;
+    fscanf(fp, "%d\n", &timeSlice);
+
     // First Come First Served
-    FCFS(p, count);
+    //FCFS(p, count);
 
     // Shortest Job First
-    SJF(p, count);
+    //SJF(p, count);
 
     // Non-Preemption Prioity
-    NPP(p, count);
+    //NPP(p, count);
     
     // Preemption Prioity
-    // PP(p, count);
+    PP(p, count);
 
     // Round-Robin
-    // RR(p, count);
+    // RR(p, count, timeSlice);
 
     // Shortest Remaining Time
-    // SRT(p, count);
+    // SRT(p, count, timeSlice);
 
     // Highest Responese Ratio Next
-    // HRN(p, count);
+    // HRN(p, count, timeSlice);
 
     // memory allocate disable
     free(p);

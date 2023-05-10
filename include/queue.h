@@ -77,7 +77,7 @@ int is_full_q(QueueType *q) {
  * @param q     pointer for queue structure
  * @param item  insert target
  */
-void ready_queue(QueueType *q, Process item) {
+void timeout(QueueType *q, Process item) {
     if(is_full_q(q)) {
         fprintf(stderr, "queue is full!\n");
         exit(1);

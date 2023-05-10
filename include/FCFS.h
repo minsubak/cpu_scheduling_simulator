@@ -27,7 +27,7 @@
  * @brief FCFS.h variable info
  *  
  *  type        name             pointer     info
- *  Process     result           y           CPU scheduling result storage structure
+ *  Process     result_fcfs      y           CPU scheduling result_fcfs storage structure
  *  double      total_turnaround n           the sum of turnaround
  *  double      total_waiting    n           the sum of waiting
  *  double      total_response   n           the sum of response
@@ -36,13 +36,13 @@
  *  Process     temp             y           pointer of process structure temporary variable
  *  int         i                n           multipurpose utilization variable
  *  int         j                n           multipurpose utilization variable
- *  QueueType   q                n           structure for Queue structure and data storage
+ *  QueueType   ready            n           structure for Queue structure and data storage
  *  int         time_flow        n           flow of time in the scheduler
  *  int         terminate        n           Number of process terminated
  *  
  */
 
-Process result[5];
+Process result_fcfs[5];
 
 /**
  * @brief   First Come First Served
@@ -69,10 +69,10 @@ void FCFS(Process *p, int n) {
 
     // create ready queue & insert process to ready queue
 
-    QueueType q;
-    init_queue(&q);
+    QueueType ready;
+    init_queue(&ready);
     for(int i = 0; i < n; i++)
-        ready_queue(&q, p[i]);
+        timeout(&ready, p[i]);
     
     // running FCFS scheduling
 
@@ -81,8 +81,8 @@ void FCFS(Process *p, int n) {
     while(terminate < n) {
         
         // dispatch new PCB
-        if(check(&q).arrival <= time_flow && temp == NULL) {
-            temp = dispatch(&q);
+        if(check(&ready).arrival <= time_flow && temp == NULL) {
+            temp = dispatch(&ready);
             temp->waiting = time_flow - temp->arrival;
             total_waiting += temp->waiting;
         }
@@ -99,7 +99,7 @@ void FCFS(Process *p, int n) {
                 total_turnaround   += temp->turnaround;
                 temp->response      = temp->waiting;
                 total_response     += temp->response;
-                result[terminate++] = *temp;
+                result_fcfs[terminate++] = *temp;
                 temp = NULL;
             }
         }
@@ -111,11 +111,11 @@ void FCFS(Process *p, int n) {
     for(int i = 0; i < n; i++)
         printf("%d\tP%d\t%d\t%d\t%d\t%d\t\n", 
         i, 
-        result[i].processID, 
-        result[i].arrival, 
-        result[i].burst, 
-        result[i].waiting,
-        result[i].turnaround
+        result_fcfs[i].processID, 
+        result_fcfs[i].arrival, 
+        result_fcfs[i].burst, 
+        result_fcfs[i].waiting,
+        result_fcfs[i].turnaround
         );
     printf("\ntime flow:\t\t%d\naverage turnaround:\t%.2lf\naverage waiting:\t%.2lf\naverage response:\t%.2lf", 
     time_flow, total_turnaround/n, total_waiting/n, total_response/n);

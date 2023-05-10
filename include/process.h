@@ -26,11 +26,8 @@
  *  int         terminate   n           process terminate flag(0|1)
  *  Process     original    y           original process structure
  *  Process     target      y           overwrite target
- *  #define     TIME_SLICE  n           time slice for RR, SRT and HRN
  * 
  */
-
-#define TIME_SLICE  2
 
 /**
  * @brief structure for process
@@ -46,18 +43,8 @@ typedef struct Process{
     int response;   // save process response time
     int waiting;    // save process waiting time
     int terminate;  // process terminate flag(0|1)
+    int timeout;
+    int execute;
 } Process;
-
-/**
- * @brief           overwrite original to target
- * 
- * @param original  original process structure
- * @param target    overwrite target
- * @return Process* 
- */
-Process* overwrite_process(Process* original, Process *target) {
-    target = original;
-    return target;
-}
 
 #endif

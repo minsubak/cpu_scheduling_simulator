@@ -15,7 +15,36 @@
 #ifndef NPP_H
 #define NPP_H
 
-Process result[5];
+// standard library
+#include <stdlib.h>
+
+// external library & user define library
+#include "queue.h"
+#include "process.h"
+
+/**
+ * @brief NPP.h variable info
+ *  
+ *  type        name             pointer     info
+ *  Process     result_npp       y           CPU scheduling result_npp storage structure
+ *  double      total_turnaround n           the sum of turnaround
+ *  double      total_waiting    n           the sum of waiting
+ *  double      total_response   n           the sum of response
+ *  void        a                y           compare target variable a
+ *  void        b                y           compare target variable b
+ *  Process     A                y           compare target variable A(w. using void* a)
+ *  Process     B                y           compare target variable B(w. using void* b)
+ *  Process     p                y           pointer for process structure
+ *  int         n                n           save process count
+ *  QueueType   ready            n           queue structure for queue(for ready queue)
+ *  QueueType   pre              n           queue structure for queue(for previous queue)
+ *  int         i                n           multipurpose utilization variable
+ *  int         time_flow        n           flow of time in the scheduler
+ *  int         terminate        n           Number of process terminated
+ *  
+ */
+
+Process result_npp[5];
 
 /**
  * @brief   compare function with qsort()
@@ -40,13 +69,13 @@ void NPP(Process *p, int n) {
 
     // create ready queue & insert process to ready queue
 
-    QueueType q;
-    init_queue(&q);
+    QueueType ready;
+    init_queue(&ready);
 
     QueueType pre;
     init_queue(&pre);
     for(int i = 0; i < n; i++)
-        ready_queue(&pre, p[i]);
+        timeout(&pre, p[i]);
 
     // running NPP scheduling
 
@@ -55,17 +84,18 @@ void NPP(Process *p, int n) {
     int terminate = 0; // Number of process terminated
     while(terminate < n) {
         
+        // if process arrives while time_flow value is increasing
         if(!is_empty_q(&pre)) {
             if(check(&pre).arrival == time_flow) {
-                ready_queue(&q, *dispatch(&pre));
-                sort(&q, compare_for_NPP);
+                timeout(&ready, *dispatch(&pre));
+                sort(&ready, compare_for_NPP);
             }
         }
         
         // dispatch new PCB
-        if(!is_empty_q(&q)) {
-            if(check(&q).arrival <= time_flow && temp == NULL) {
-                temp = dispatch(&q);
+        if(!is_empty_q(&ready)) {
+            if(check(&ready).arrival <= time_flow && temp == NULL) {
+                temp = dispatch(&ready);
                 temp->waiting = time_flow - temp->arrival;
                 total_waiting += temp->waiting;
             }
@@ -83,7 +113,7 @@ void NPP(Process *p, int n) {
                 total_turnaround   += temp->turnaround;
                 temp->response      = temp->waiting;
                 total_response     += temp->response;
-                result[terminate++] = *temp;
+                result_npp[terminate++] = *temp;
                 temp = NULL;
             }
         }
@@ -94,11 +124,11 @@ void NPP(Process *p, int n) {
     for(int i = 0; i < n; i++)
         printf("%d\tP%d\t%d\t%d\t%d\t%d\t\n", 
         i, 
-        result[i].processID, 
-        result[i].arrival, 
-        result[i].prioity, 
-        result[i].waiting,
-        result[i].turnaround
+        result_npp[i].processID, 
+        result_npp[i].arrival, 
+        result_npp[i].prioity, 
+        result_npp[i].waiting,
+        result_npp[i].turnaround
         );
     printf("\ntime flow:\t\t%d\naverage turnaround:\t%.2lf\naverage waiting:\t%.2lf\naverage response:\t%.2lf", 
     time_flow, total_turnaround/n, total_waiting/n, total_response/n);
@@ -106,8 +136,15 @@ void NPP(Process *p, int n) {
 
 int compare_for_NPP(const void* a, const void* b) {
     
+    // compare target match progress
+
     Process* A = (Process*) a;
     Process* B = (Process*) b;
+
+    // if compare target A and B was same
+    if(A->prioity == B->prioity) {
+        return (A->arrival>B->arrival)-(A->arrival<B->arrival);
+    }
 
     return (A->prioity>B->prioity)-(A->prioity<B->prioity);
 } 
