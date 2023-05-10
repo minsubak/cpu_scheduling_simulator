@@ -30,15 +30,15 @@
  *  double      total_turnaround n           the sum of turnaround
  *  double      total_waiting    n           the sum of waiting
  *  double      total_response   n           the sum of response
- *  void        a                y           
- *  void        b                y           
- *  Process     A                y           
- *  Process     B                y           
- *  Process     p                y           
- *  int         n                n           
- *  QueueType   q                n           
- *  QueueType   pre              n           
- *  int         i                n           
+ *  void        a                y           compare target variable a
+ *  void        b                y           compare target variable b
+ *  Process     A                y           compare target variable A(w. using void* a)
+ *  Process     B                y           compare target variable B(w. using void* b)
+ *  Process     p                y           pointer for process structure
+ *  int         n                n           save process count
+ *  QueueType   q                n           queue structure for queue(for ready queue)
+ *  QueueType   pre              n           queue structure for queue(for previous queue)
+ *  int         i                n           multipurpose utilization variable
  *  int         time_flow        n           flow of time in the scheduler
  *  int         terminate        n           Number of process terminated
  *  
@@ -135,6 +135,8 @@ void SJF(Process *p, int n) {
 
 int compare_for_SJF(const void* a, const void* b) {
     
+    // compare target match progress
+
     Process* A = (Process*) a;
     Process* B = (Process*) b;
 
