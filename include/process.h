@@ -11,7 +11,8 @@
 #ifndef PROCESS_H
 #define PROCESS_H
 
-#define MAX 1024
+// standard libaray
+#include <stdbool.h>
 
 /**
  * @brief process.h variable info
@@ -30,6 +31,9 @@
  *  Process     target      y           overwrite target
  * 
  */
+
+#define MAX             1024
+#define CHECK_PROGRESS  false
 
 /**
  * @brief structure for process

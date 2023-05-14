@@ -7,7 +7,7 @@
  *          - once executed, wait until the next order is over
  *          - all processes have the same prioity
  * @version 0.1
- * @date    (first data: 2023-05-03)
+ * @date    (first date: 2023-05-03, last date: 2023-05-15)
  * 
  * @copyright Copyright (c) 2023 Minsu Bak
  * 
@@ -18,6 +18,7 @@
 
 // standard library
 #include <stdlib.h>
+#include <stdbool.h>
 
 // external library & user define library
 #include "queue.h"
@@ -28,16 +29,17 @@
  * @brief FCFS.h variable info
  *  
  *  type        name             pointer     info
- *  Process     result           y           CPU scheduling result storage structure, external from "process.h"
+ *  Process     result           y           CPU scheduling result storage structure, reference from "process.h"
+ *  Process     p                y           structure for process data storage
+ *  Process     temp             y           pointer of process structure temporary variable
+ *  QueueType   ready            n           structure for Queue structure and data storage
+ *  QueueType   pre              n           structure for Queue structure and data storage
  *  int         total_turnaround n           the sum of turnaround
  *  int         total_waiting    n           the sum of waiting
  *  int         total_response   n           the sum of response
- *  Process     p                y           structure for process data storage
+ *  int         result_index     n           index for result array
  *  int         n                n           save process count
- *  Process     temp             y           pointer of process structure temporary variable
  *  int         i                n           multipurpose utilization variable
- *  int         j                n           multipurpose utilization variable
- *  QueueType   ready            n           structure for Queue structure and data storage
  *  int         time_flow        n           flow of time in the scheduler
  *  int         terminate        n           Number of process terminated
  *  
@@ -80,7 +82,8 @@ void FCFS(Process *p, int n) {
         if(!is_empty_q(&pre)) {
             if(check(&pre).arrival == time_flow) {
                 timeout(&ready, *dispatch(&pre));
-                printf("arrival:\tt: %d, p: %d\n", time_flow, ready.queue->processID);
+                if(CHECK_PROGRESS) // debug
+                    printf("arrival:\tt: %d, p: %d\n", time_flow, ready.queue->processID);
             }
         }
 
@@ -90,7 +93,8 @@ void FCFS(Process *p, int n) {
             temp->waiting = time_flow - temp->arrival;
             total_waiting += temp->waiting;
             temp->execute = 0;
-            printf("dispatch:\tt: %d, p: %d, w: %d\n", time_flow, temp->processID, temp->waiting);
+            if(CHECK_PROGRESS) // debug
+                printf("dispatch:\tt: %d, p: %d, w: %d\n", time_flow, temp->processID, temp->waiting);
         }
 
         time_flow++;
@@ -102,7 +106,8 @@ void FCFS(Process *p, int n) {
 
             // terminate present PCB
             if(temp->remain == 0) {
-                printf("terminate:\tt: %d, p: %d\n", time_flow, temp->processID);
+                if(CHECK_PROGRESS) // debug
+                    printf("terminate:\tt: %d, p: %d\n", time_flow, temp->processID);
                 total_turnaround    += temp->execute + temp->waiting;
                 total_response      += temp->waiting;
                 result[result_index++] = *temp;
