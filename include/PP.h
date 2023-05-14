@@ -115,7 +115,7 @@ void PP(Process *p, int n) {
                 total_turnaround   += temp->turnaround;
                 temp->response      = temp->waiting;
                 total_response     += temp->response;
-                result_pp[result_index].execute = temp->execute;
+                //result_pp[result_index].execute = temp->execute;
                 result_pp[result_index++] = *temp;
                 timeout(&ready, *temp);
                 temp = dispatch(&ready);

@@ -26,7 +26,7 @@
  * @brief queue.h variable info
  * 
  *  type        name        pointer     info
- *  #define     MAX         n           queue storage size
+ *  #define     MAX_Q         n           queue storage size
  *  int         front       n           queue front data flag
  *  int         rear        n           queue rear data flag
  *  Process     queue       y           structre queue array for Process data storage
@@ -35,11 +35,11 @@
  * 
  */
 
-#define MAX     20
+#define MAX_Q 20
 
 typedef struct QueueType {
     int front, rear;
-    Process queue[MAX];
+    Process queue[MAX_Q];
 }QueueType;
 
 /**
@@ -68,7 +68,7 @@ int is_empty_q(QueueType *q) {
  * @return  int 
  */
 int is_full_q(QueueType *q) {
-    return (q->front == (q->rear+1) % MAX);
+    return (q->front == (q->rear+1) % MAX_Q);
 }
 
 /**
@@ -82,7 +82,7 @@ void timeout(QueueType *q, Process item) {
         fprintf(stderr, "queue is full!\n");
         exit(1);
     }
-    q->rear = (q->rear + 1) % MAX;
+    q->rear = (q->rear + 1) % MAX_Q;
     q->queue[q->rear] = item;
 }
 
@@ -97,7 +97,7 @@ Process* dispatch(QueueType *q) {
         fprintf(stderr, "queue is empty!\n");
         return;
     }
-    q->front = (q->front + 1) % MAX;
+    q->front = (q->front + 1) % MAX_Q;
     return &q->queue[q->front];
 }
 
@@ -109,7 +109,7 @@ Process* dispatch(QueueType *q) {
  */
 Process check(QueueType *q) {
     if(is_empty_q(q)) return;
-    return q->queue[(q->front + 1) % MAX];
+    return q->queue[(q->front + 1) % MAX_Q];
 }
 
 /**

@@ -14,10 +14,10 @@
 
 // external library & user define library
 #include "FCFS.h"
+/*
 #include "SJF.h"
 #include "NPP.h"
 #include "PP.h"
-/*
 #include "RR.h"
 #include "SRT.h"
 #include "HRN.h"
@@ -30,7 +30,6 @@
  *  char        message     y           message with error info
  *  
  */
-
 
 /**
  * @brief print error and exit

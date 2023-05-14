@@ -11,6 +11,8 @@
 #ifndef PROCESS_H
 #define PROCESS_H
 
+#define MAX 1024
+
 /**
  * @brief process.h variable info
  *  
@@ -20,8 +22,8 @@
  *  int         burst       n           process burst time
  *  int         remain      n           process remain time
  *  int         prioity     n           process prioity
- *  int         turnaround  n           save process turnaround time
- *  int         response    n           save process response time
+ *  int         turnaround  n           save process turnaround time (will delete soon)
+ *  int         response    n           save process response time   (will delete soon)
  *  int         waiting     n           save process waiting time
  *  int         terminate   n           process terminate flag(0|1)
  *  Process     original    y           original process structure

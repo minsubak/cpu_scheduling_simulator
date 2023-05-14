@@ -30,6 +30,8 @@
  *  
  */
 
+Process result[MAX];
+
 int main() {
     
     // search and load "data.txt" files with process data
@@ -67,7 +69,7 @@ int main() {
     fscanf(fp, "%d\n", &timeSlice);
 
     // First Come First Served
-    //FCFS(p, count);
+    FCFS(p, count);
 
     // Shortest Job First
     //SJF(p, count);
@@ -76,7 +78,7 @@ int main() {
     //NPP(p, count);
     
     // Preemption Prioity
-    PP(p, count);
+    //PP(p, count);
 
     // Round-Robin
     // RR(p, count, timeSlice);
