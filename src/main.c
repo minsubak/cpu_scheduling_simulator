@@ -31,6 +31,14 @@
  */
 
 Process result[MAX];
+Process RESET;
+
+/**
+ * @brief   initalize result array
+ * 
+ * @param p pointer for process structure, initalize target
+ */
+void init_result(Process* r);
 
 int main() {
     
@@ -50,10 +58,10 @@ int main() {
     
     int i = 0;
     while(i < count) {
-        fscanf(fp, "%d %d %d %d\n", 
-        &p[i].processID, 
-        &p[i].arrival, 
-        &p[i].burst, 
+        fscanf(fp, "%d %d %d %d\n",\
+        &p[i].processID,\
+        &p[i].arrival,\
+        &p[i].burst,\
         &p[i].prioity
         );
         p[i].remain = p[i].burst;
@@ -69,22 +77,28 @@ int main() {
     fscanf(fp, "%d\n", &timeSlice);
 
     // First Come First Served
-    FCFS(p, count);
+    //FCFS(p, count);
+    //init_result(result);
 
     // Shortest Job First
     //SJF(p, count);
+    //init_result(result);
 
     // Non-Preemption Prioity
-    //NPP(p, count);
+    NPP(p, count);
+    //init_result(result);
     
     // Preemption Prioity
     //PP(p, count);
+    //init_result(result);
 
     // Round-Robin
     // RR(p, count, timeSlice);
+    //init_result(result);
 
     // Shortest Remaining Time
     // SRT(p, count, timeSlice);
+    init_result(result);
 
     // Highest Responese Ratio Next
     // HRN(p, count, timeSlice);
@@ -93,4 +107,10 @@ int main() {
     free(p);
     fclose(fp);
     return 0;
+}
+
+void init_result(Process* p) {
+    
+    for(int i = 0; i < MAX; i++)
+        p[i] = RESET;
 }

@@ -1,8 +1,8 @@
-# CPU scheduling in Operating System
- * update: 08/05/2023
+# CPU scheduler simulator for Operating System (SCH Univ.)
+ * update: 15/05/2023
  
  - 사용한 스케줄링 기법:   
-   FCFS, SJF, Non/Preemption Priority, RR, SRT, HRN
+   FCFS, SJF, Non-Preemption Priority, Preemption Priority, RR, SRT, HRN
 
  - 입력(순서 고정):    
    프로세스 인덱스, 프로세스ID, 도착시간, 서비스시간, 우선순위, 시간할당량
@@ -22,6 +22,7 @@
    팀 구성, 님원 역할, 개발언어, 함수/클래스 구성도/다이어그램, 자료구조/주요변수 설명, 
    각 알고리즘 핵심 부분코드 설명, 개발한 UI 특징, 각 알고리즘 실행 결과 캡쳐 및 설명
 
+ - 기타:   
    해당 소스 코드, 파일은 VScode, UTF-8 환경에서 작성
    폰트 오류 발생 시 인코딩을 UTF-8로 변경
 

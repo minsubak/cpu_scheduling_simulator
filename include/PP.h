@@ -15,12 +15,10 @@
 #ifndef PP_H
 #define PP_H
 
-// standard library
-#include <stdlib.h>
-
 // external library & user define library
 #include "queue.h"
 #include "process.h"
+#include "compare.h"
 
 /**
  * @brief PP.h variable info
@@ -45,7 +43,7 @@
  *  
  */
 
-Process result_pp[1024];
+extern Process result_pp[1024];
 
 /**
  * @brief   compare function with qsort()

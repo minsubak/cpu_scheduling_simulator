@@ -33,13 +33,14 @@
  */
 
 #define MAX             1024
-#define CHECK_PROGRESS  false
+#define CHECK_PROGRESS  true
 
 /**
  * @brief structure for process
  * 
  */
 typedef struct Process{
+
     int processID;  // process no.
     int arrival;    // process arrival time
     int burst;      // process burst time
@@ -51,6 +52,26 @@ typedef struct Process{
     int terminate;  // process terminate flag(0|1)
     int timeout;
     int execute;
+
 } Process;
+
+void print_result(Process *p, int n, int t, int w, int r, char* name) {
+
+    printf("\n\n%s\n", name);
+    printf("index\tPID\tarrival\tburst\tprioity\twaitng\tturnaround\n");
+    for(int i = 0; i < n ;i++)
+        printf("%d\tP%d\t%d\t%d\t%d\t%d\t%d\n", 
+        i,\
+        p[i].processID,\
+        p[i].arrival,\
+        p[i].burst,\
+        p[i].prioity,\
+        p[i].waiting,\
+        (p[i].execute + p[i].waiting)
+        );
+    printf("turnaround average:\t%.1lf\n", (double)t/n);
+    printf("waiting average:\t%.1lf\n", (double)w/n);
+    printf("response average:\t%.1lf\n", (double)r/n);
+}
 
 #endif

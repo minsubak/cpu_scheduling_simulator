@@ -38,8 +38,10 @@
 #define MAX_Q 20
 
 typedef struct QueueType {
+
     int front, rear;
     Process queue[MAX_Q];
+    
 }QueueType;
 
 /**
@@ -48,6 +50,7 @@ typedef struct QueueType {
  * @param q pointer for queue structure
  */
 void init_queue(QueueType *q) {
+    
     q->front = q->rear = 0;
 }
 
@@ -58,6 +61,7 @@ void init_queue(QueueType *q) {
  * @return  int 
  */
 int is_empty_q(QueueType *q) {
+
     return (q->front == q->rear);
 }
 
@@ -68,6 +72,7 @@ int is_empty_q(QueueType *q) {
  * @return  int 
  */
 int is_full_q(QueueType *q) {
+
     return (q->front == (q->rear+1) % MAX_Q);
 }
 
@@ -78,6 +83,7 @@ int is_full_q(QueueType *q) {
  * @param item  insert target
  */
 void timeout(QueueType *q, Process item) {
+
     if(is_full_q(q)) {
         fprintf(stderr, "queue is full!\n");
         exit(1);
@@ -93,6 +99,7 @@ void timeout(QueueType *q, Process item) {
  * @return  Process
  */
 Process* dispatch(QueueType *q) {
+
     if(is_empty_q(q)) {
         fprintf(stderr, "queue is empty!\n");
         return;
@@ -108,6 +115,7 @@ Process* dispatch(QueueType *q) {
  * @return Process 
  */
 Process check(QueueType *q) {
+
     if(is_empty_q(q)) return;
     return q->queue[(q->front + 1) % MAX_Q];
 }
@@ -119,6 +127,7 @@ Process check(QueueType *q) {
  * @param compare 
  */
 void sort(QueueType *q, int(*compare)(const void* a, const void* b)) {
+
     qsort(q->queue + q->front + 1, q->rear-q->front, sizeof(Process), compare);
 }
 

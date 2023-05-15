@@ -5,9 +5,8 @@
  *          = non preemeption method - SJF(Shortest Job First)
  *          - assign to CPU in order of burst time in the ready queue
  *          - improve efficiency by reducing the Conboy effect
- * 
  * @version 0.1
- * @date    2023-05-09
+ * @date    (first date: 2023-05-09, last date: 2023-05-15)
  * 
  * @copyright Copyright (c) 2023 Minsu Bak
  * 
@@ -15,45 +14,32 @@
 #ifndef SJF_H
 #define SJF_H
 
-// standard library
-#include <stdlib.h>
-
 // external library & user define library
 #include "queue.h"
 #include "process.h"
+#include "compare.h"
 
 /**
  * @brief SJF.h variable info
  *  
  *  type        name             pointer     info
- *  Process     result_sjf       y           CPU scheduling result_sjf storage structure
- *  double      total_turnaround n           the sum of turnaround
- *  double      total_waiting    n           the sum of waiting
- *  double      total_response   n           the sum of response
- *  void        a                y           compare target variable a
- *  void        b                y           compare target variable b
- *  Process     A                y           compare target variable A(w. using void* a)
- *  Process     B                y           compare target variable B(w. using void* b)
- *  Process     p                y           pointer for process structure
- *  int         n                n           save process count
+ *  Process     result           y           CPU scheduling result storage structure, reference from "process.h"
+ *  Process     p                y           structure for process data storage
+ *  Process     temp             y           pointer of process structure temporary variable
  *  QueueType   ready            n           queue structure for queue(for ready queue)
  *  QueueType   pre              n           queue structure for queue(for previous queue)
+ *  int         total_turnaround n           the sum of turnaround
+ *  int         total_waiting    n           the sum of waiting
+ *  int         total_response   n           the sum of response
+ *  int         result_index     n           index for result array
+ *  int         n                n           save process count
  *  int         i                n           multipurpose utilization variable
  *  int         time_flow        n           flow of time in the scheduler
  *  int         terminate        n           Number of process terminated
  *  
  */
 
-Process result_sjf[5];
-
-/**
- * @brief   compare function with qsort
- * 
- * @param a compare target a
- * @param b compare target b
- * @return  int 
- */
-int compare_for_SJF(const void* a, const void* b);
+extern Process result[MAX];
 
 /**
  * @brief   Shortest Job First
@@ -63,41 +49,47 @@ int compare_for_SJF(const void* a, const void* b);
  */
 void SJF(Process *p, int n) {
     
-    double  total_turnaround = 0;   
-    double  total_waiting    = 0;
-    double  total_response   = 0;
+    // create variable, queue and etc
 
-    // create ready queue & insert process to ready queue
+    int total_turnaround = 0;   
+    int total_waiting    = 0;
+    int total_response   = 0;
+    int result_index     = 0;
+    Process *temp     = NULL;
+    QueueType ready, pre;
 
-    QueueType ready;
+    // initalize queue
     init_queue(&ready);
-
-    QueueType pre;
     init_queue(&pre);
+
+    // insert process to queue
     for(int i = 0; i < n; i++)
         timeout(&pre, p[i]);
 
     // running SJF scheduling
 
-    Process *temp = NULL;
     int time_flow = 0; // flow of time in the scheduler
     int terminate = 0; // Number of process terminated
     while(terminate < n) {
         
+        // insert process into the ready queue in order of arrive
         if(!is_empty_q(&pre)) {
             if(check(&pre).arrival == time_flow) {
                 timeout(&ready, *dispatch(&pre));
-                sort(&ready, compare_for_SJF);
+                if(CHECK_PROGRESS) // debug
+                    printf("arrival:\tt: %d, p: %d\n", time_flow, ready.queue->processID);
+                sort(&ready, compare_for_burst);
             }
         }
         
-        // dispatch new PCB
-        if(!is_empty_q(&ready)) {
-            if(check(&ready).arrival <= time_flow && temp == NULL) {
-                temp = dispatch(&ready);
-                temp->waiting = time_flow - temp->arrival;
-                total_waiting += temp->waiting;
-            }
+        // dispatch new PCB: if the previous task terminated
+        if(check(&ready).arrival <= time_flow && temp == NULL) {
+            temp = dispatch(&ready);
+            temp->waiting = time_flow - temp->arrival;
+            total_waiting += temp->waiting;
+            temp->execute = 0;
+            if(CHECK_PROGRESS) // debug
+                printf("dispatch:\tt: %d, p: %d, w: %d\n", time_flow, temp->processID, temp->waiting);
         }
 
         time_flow++;
@@ -105,42 +97,30 @@ void SJF(Process *p, int n) {
         // scheduler task progress
         if(temp != NULL) {
             temp->remain--;
+            temp->execute++;
 
             // terminate present PCB
             if(temp->remain == 0) {
-                temp->turnaround    = temp->burst + temp->waiting;
-                total_turnaround   += temp->turnaround;
-                temp->response      = temp->waiting;
-                total_response     += temp->response;
-                result_sjf[terminate++] = *temp;
+                if(CHECK_PROGRESS) // debug
+                    printf("terminate:\tt: %d, p: %d\n", time_flow, temp->processID);
+                total_turnaround      += temp->execute + temp->waiting;
+                total_response        += temp->waiting;
+                result[result_index++] = *temp;
                 temp = NULL;
+                terminate++;
             }
         }
     }
+
     //test print
-    printf("\n\nSJF\n");
-    printf("index\tPID\tArrival\tBurst\tWaiting\tTurnaround\n");
-    for(int i = 0; i < n; i++)
-        printf("%d\tP%d\t%d\t%d\t%d\t%d\t\n", 
-        i, 
-        result_sjf[i].processID, 
-        result_sjf[i].arrival, 
-        result_sjf[i].burst, 
-        result_sjf[i].waiting,
-        result_sjf[i].turnaround
-        );
-    printf("\ntime flow:\t\t%d\naverage turnaround:\t%.2lf\naverage waiting:\t%.2lf\naverage response:\t%.2lf", 
-    time_flow, total_turnaround/n, total_waiting/n, total_response/n);
+    print_result(
+        result,\
+        result_index,\
+        total_turnaround,\
+        total_waiting,\
+        total_response,\
+        "SJF"
+    );
 }
-
-int compare_for_SJF(const void* a, const void* b) {
-    
-    // compare target match progress
-
-    Process* A = (Process*) a;
-    Process* B = (Process*) b;
-
-    return (A->burst>B->burst)-(A->burst<B->burst);
-} 
 
 #endif

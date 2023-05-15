@@ -4,6 +4,7 @@
         "time.h": "c",
         "process.h": "c",
         "stdlib.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "compare.h": "c"
     }
 }

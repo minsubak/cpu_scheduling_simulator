@@ -16,10 +16,6 @@
 #ifndef FCFS_H
 #define FCFS_H
 
-// standard library
-#include <stdlib.h>
-#include <stdbool.h>
-
 // external library & user define library
 #include "queue.h"
 #include "process.h"
@@ -32,8 +28,8 @@
  *  Process     result           y           CPU scheduling result storage structure, reference from "process.h"
  *  Process     p                y           structure for process data storage
  *  Process     temp             y           pointer of process structure temporary variable
- *  QueueType   ready            n           structure for Queue structure and data storage
- *  QueueType   pre              n           structure for Queue structure and data storage
+ *  QueueType   ready            n           queue structure for queue(for ready queue)
+ *  QueueType   pre              n           queue structure for queue(for previous queue)
  *  int         total_turnaround n           the sum of turnaround
  *  int         total_waiting    n           the sum of waiting
  *  int         total_response   n           the sum of response
@@ -50,22 +46,25 @@ extern Process result[MAX];
 /**
  * @brief   First Come First Served
  * 
- * @param p pointer for process structer
+ * @param p pointer for process structure
  * @param n process count
  */
 void FCFS(Process *p, int n) {
     
+    // create variable, queue and etc
+
     int total_turnaround = 0;   
     int total_waiting    = 0;
     int total_response   = 0;
     int result_index     = 0;
     Process *temp     = NULL;
-
-    // create queue & insert process to queue
-
     QueueType ready, pre;
+
+    // initalize queue
     init_queue(&ready);
     init_queue(&pre);
+
+    // insert process to queue
     for(int i = 0; i < n; i++)
         timeout(&pre, p[i]);
 
@@ -87,7 +86,7 @@ void FCFS(Process *p, int n) {
             }
         }
 
-        // dispatch new PCB: If the previous task terminated
+        // dispatch new PCB: if the previous task terminated
         if(check(&ready).arrival <= time_flow && temp == NULL) {
             temp = dispatch(&ready);
             temp->waiting = time_flow - temp->arrival;
@@ -108,8 +107,8 @@ void FCFS(Process *p, int n) {
             if(temp->remain == 0) {
                 if(CHECK_PROGRESS) // debug
                     printf("terminate:\tt: %d, p: %d\n", time_flow, temp->processID);
-                total_turnaround    += temp->execute + temp->waiting;
-                total_response      += temp->waiting;
+                total_turnaround      += temp->execute + temp->waiting;
+                total_response        += temp->waiting;
                 result[result_index++] = *temp;
                 temp = NULL;
                 terminate++;
@@ -118,19 +117,14 @@ void FCFS(Process *p, int n) {
     }
 
     //test print
-    printf("\n\nFCFS\n");
-    printf("index\tPID\tArrival\tBurst\tWaiting\tTurnaround\n");
-    for(int i = 0; i < result_index; i++)
-        printf("%d\tP%d\t%d\t%d\t%d\t%d\t\n", 
-        i, 
-        result[i].processID, 
-        result[i].arrival, 
-        result[i].burst, 
-        result[i].waiting,
-        (result[i].execute + result[i].waiting)
-        );
-    printf("\ntime flow:\t\t%d\naverage turnaround:\t%.1lf\naverage waiting:\t%.1lf\naverage response:\t%.1lf", 
-    time_flow, (double)total_turnaround/n, (double)total_waiting/n, (double)total_response/n);
+    print_result(
+        result,\
+        result_index,\
+        total_turnaround,\
+        total_waiting,\
+        total_response,\
+        "FCFS"
+    );
 }
 
 #endif

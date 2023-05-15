@@ -3,9 +3,7 @@
  * @author  Mindou (minsu5875@naver.com)
  * @brief   = CPU schedule simulator
  *          = non preemeption method - NPP(Non-Preemption Prioity)
- *          - 
- *          - 
- * 
+ *          - assign to CPU in order of prioity in the ready queue
  * @version 0.1
  * @date    2023-05-10
  * 
@@ -15,18 +13,16 @@
 #ifndef NPP_H
 #define NPP_H
 
-// standard library
-#include <stdlib.h>
-
 // external library & user define library
 #include "queue.h"
 #include "process.h"
+#include "compare.h"
 
 /**
  * @brief NPP.h variable info
  *  
  *  type        name             pointer     info
- *  Process     result_npp       y           CPU scheduling result_npp storage structure
+ *  Process     result           y           CPU scheduling result storage structure
  *  double      total_turnaround n           the sum of turnaround
  *  double      total_waiting    n           the sum of waiting
  *  double      total_response   n           the sum of response
@@ -44,16 +40,7 @@
  *  
  */
 
-Process result_npp[5];
-
-/**
- * @brief   compare function with qsort()
- * 
- * @param a compare target a
- * @param b compare target b
- * @return  int 
- */
-int compare_for_NPP(const void* a, const void* b);
+extern Process result[MAX];
 
 /**
  * @brief   Non-Preemption Prioity
@@ -63,23 +50,25 @@ int compare_for_NPP(const void* a, const void* b);
  */
 void NPP(Process *p, int n) {
     
-    double total_turnaround = 0;   
-    double total_waiting    = 0;
-    double total_response   = 0;
+    // create variable, queue and etc
 
-    // create ready queue & insert process to ready queue
+    int total_turnaround = 0;   
+    int total_waiting    = 0;
+    int total_response   = 0;
+    int result_index     = 0;
+    Process *temp     = NULL;
+    QueueType ready, pre;
 
-    QueueType ready;
+    // initalize queue
     init_queue(&ready);
-
-    QueueType pre;
     init_queue(&pre);
+
+    // insert process to queue
     for(int i = 0; i < n; i++)
         timeout(&pre, p[i]);
 
     // running NPP scheduling
 
-    Process *temp = NULL;
     int time_flow = 0; // flow of time in the scheduler
     int terminate = 0; // Number of process terminated
     while(terminate < n) {
@@ -88,17 +77,20 @@ void NPP(Process *p, int n) {
         if(!is_empty_q(&pre)) {
             if(check(&pre).arrival == time_flow) {
                 timeout(&ready, *dispatch(&pre));
-                sort(&ready, compare_for_NPP);
+                if(CHECK_PROGRESS) // debug
+                    printf("arrival:\tt: %d, p: %d\n", time_flow, ready.queue->processID);
+                sort(&ready, compare_for_prioity);
             }
         }
         
-        // dispatch new PCB
-        if(!is_empty_q(&ready)) {
-            if(check(&ready).arrival <= time_flow && temp == NULL) {
-                temp = dispatch(&ready);
-                temp->waiting = time_flow - temp->arrival;
-                total_waiting += temp->waiting;
-            }
+        // dispatch new PCB: if the previous task terminated
+        if(check(&ready).arrival <= time_flow && temp == NULL) {
+            temp = dispatch(&ready);
+            temp->waiting = time_flow - temp->arrival;
+            total_waiting += temp->waiting;
+            temp->execute = 0;
+            if(CHECK_PROGRESS) // debug
+                printf("dispatch:\tt: %d, p: %d, w: %d\n", time_flow, temp->processID, temp->waiting);
         }
 
         time_flow++;
@@ -106,47 +98,30 @@ void NPP(Process *p, int n) {
         // scheduler task progress
         if(temp != NULL) {
             temp->remain--;
+            temp->execute++;
 
             // terminate present PCB
             if(temp->remain == 0) {
-                temp->turnaround    = temp->burst + temp->waiting;
-                total_turnaround   += temp->turnaround;
-                temp->response      = temp->waiting;
-                total_response     += temp->response;
-                result_npp[terminate++] = *temp;
+                if(CHECK_PROGRESS) // debug
+                    printf("terminate:\tt: %d, p: %d\n", time_flow, temp->processID);
+                total_turnaround      += temp->execute + temp->waiting;
+                total_response        += temp->waiting;
+                result[result_index++] = *temp;
                 temp = NULL;
+                terminate++;
             }
         }
     }
+
     //test print
-    printf("\n\nNPP\n");
-    printf("index\tPID\tArrival\tPrioity\tWaiting\tTurnaround\n");
-    for(int i = 0; i < n; i++)
-        printf("%d\tP%d\t%d\t%d\t%d\t%d\t\n", 
-        i, 
-        result_npp[i].processID, 
-        result_npp[i].arrival, 
-        result_npp[i].prioity, 
-        result_npp[i].waiting,
-        result_npp[i].turnaround
-        );
-    printf("\ntime flow:\t\t%d\naverage turnaround:\t%.2lf\naverage waiting:\t%.2lf\naverage response:\t%.2lf", 
-    time_flow, total_turnaround/n, total_waiting/n, total_response/n);
+    print_result(
+        result,\
+        result_index,\
+        total_turnaround,\
+        total_waiting,\
+        total_response,\
+        "NPP"
+    );
 }
-
-int compare_for_NPP(const void* a, const void* b) {
-    
-    // compare target match progress
-
-    Process* A = (Process*) a;
-    Process* B = (Process*) b;
-
-    // if compare target A and B was same
-    if(A->prioity == B->prioity) {
-        return (A->arrival>B->arrival)-(A->arrival<B->arrival);
-    }
-
-    return (A->prioity>B->prioity)-(A->prioity<B->prioity);
-} 
 
 #endif
