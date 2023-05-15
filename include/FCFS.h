@@ -79,7 +79,7 @@ void FCFS(Process *p, int n) {
         
         // insert prcoess into the ready queue in order of arrive
         if(!is_empty_q(&pre)) {
-            if(check(&pre).arrival == time_flow) {
+            if(peek(&pre).arrival == time_flow) {
                 timeout(&ready, *dispatch(&pre));
                 if(CHECK) // debug
                     printf("arrival:\tt: %2d, p: %2d\n", time_flow, ready.queue->processID);
@@ -87,7 +87,7 @@ void FCFS(Process *p, int n) {
         }
 
         // dispatch new PCB: if the previous task terminated
-        if(check(&ready).arrival <= time_flow && temp == NULL) {
+        if(peek(&ready).arrival <= time_flow && temp == NULL) {
             temp = dispatch(&ready);
             temp->waiting  = time_flow - temp->arrival;
             total_waiting += temp->waiting;

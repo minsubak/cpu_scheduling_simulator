@@ -75,7 +75,7 @@ void RR(Process *p, int n, int t) {
 
         // dispatch new PCB and time-out present PCB
         if(!is_empty_q(&ready)) {
-            if(check(&ready).arrival <= time_flow && temp == NULL) {
+            if(peek(&ready).arrival <= time_flow && temp == NULL) {
                 temp = dispatch(&ready);
                 printf("dispatch - t: %d p: %d w: %d\n", time_flow, temp->processID, temp->waiting);
                 temp->waiting = time_flow - temp->timeout;

@@ -89,11 +89,11 @@ int main() {
     //init_result(result);
     
     // Preemption Prioity
-    PP(p, count);
+    //PP(p, count);
     //init_result(result);
 
     // Round-Robin
-    // RR(p, count, timeSlice);
+    RR(p, count, timeSlice);
     //init_result(result);
 
     // Shortest Remaining Time

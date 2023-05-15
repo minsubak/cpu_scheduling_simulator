@@ -114,7 +114,7 @@ Process* dispatch(QueueType *q) {
  * @param q pointer for queue structure
  * @return Process 
  */
-Process check(QueueType *q) {
+Process peek(QueueType *q) {
 
     if(is_empty_q(q)) return;
     return q->queue[(q->front + 1) % MAX_Q];

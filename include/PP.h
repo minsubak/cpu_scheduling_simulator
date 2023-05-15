@@ -74,7 +74,7 @@ void PP(Process *p, int n) {
 
         // if process arrives while time_flow value is increasing
         if(!is_empty_q(&pre)) {
-            if(check(&pre).arrival == time_flow) {
+            if(peek(&pre).arrival == time_flow) {
                 timeout(&ready, *dispatch(&pre));
                 if(CHECK) // debug
                     printf("arrival:\tt: %2d, p: %2d\n", time_flow, ready.queue->processID);
@@ -83,18 +83,18 @@ void PP(Process *p, int n) {
         }
 
         // dispatch new PCB: if the previous task terminated
-        if(check(&ready).arrival <= time_flow && temp == NULL) {
+        if(peek(&ready).arrival <= time_flow && temp == NULL) {
             temp = dispatch(&ready);
-            temp->waiting = time_flow - temp->timeout;
+            temp->waiting  = time_flow - temp->timeout;
             total_waiting += temp->waiting;
-            temp->execute = 0;
+            temp->execute  = 0;
             if(CHECK) // debug
                 printf("dispatch:\tt: %2d, p: %2d, w: %2d\n", time_flow, temp->processID, temp->waiting);
         }
 
         // check prioity during operation
         if(!is_empty_q(&ready)) {
-            if(check(&ready).prioity < temp->prioity) {
+            if(peek(&ready).prioity < temp->prioity) {
                 if(CHECK)
                     printf("timeout:\tt: %2d, p: %2d\n", time_flow, temp->processID);
                 temp->timeout = time_flow;
