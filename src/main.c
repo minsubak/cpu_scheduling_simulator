@@ -85,11 +85,11 @@ int main() {
     //init_result(result);
 
     // Non-Preemption Prioity
-    NPP(p, count);
+    //NPP(p, count);
     //init_result(result);
     
     // Preemption Prioity
-    //PP(p, count);
+    PP(p, count);
     //init_result(result);
 
     // Round-Robin

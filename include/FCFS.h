@@ -81,19 +81,19 @@ void FCFS(Process *p, int n) {
         if(!is_empty_q(&pre)) {
             if(check(&pre).arrival == time_flow) {
                 timeout(&ready, *dispatch(&pre));
-                if(CHECK_PROGRESS) // debug
-                    printf("arrival:\tt: %d, p: %d\n", time_flow, ready.queue->processID);
+                if(CHECK) // debug
+                    printf("arrival:\tt: %2d, p: %2d\n", time_flow, ready.queue->processID);
             }
         }
 
         // dispatch new PCB: if the previous task terminated
         if(check(&ready).arrival <= time_flow && temp == NULL) {
             temp = dispatch(&ready);
-            temp->waiting = time_flow - temp->arrival;
+            temp->waiting  = time_flow - temp->arrival;
             total_waiting += temp->waiting;
-            temp->execute = 0;
-            if(CHECK_PROGRESS) // debug
-                printf("dispatch:\tt: %d, p: %d, w: %d\n", time_flow, temp->processID, temp->waiting);
+            temp->execute  = 0;
+            if(CHECK) // debug
+                printf("dispatch:\tt: %2d, p: %2d, w: %2d\n", time_flow, temp->processID, temp->waiting);
         }
 
         time_flow++;
@@ -105,8 +105,8 @@ void FCFS(Process *p, int n) {
 
             // terminate present PCB
             if(temp->remain == 0) {
-                if(CHECK_PROGRESS) // debug
-                    printf("terminate:\tt: %d, p: %d\n", time_flow, temp->processID);
+                if(CHECK) // debug
+                    printf("terminate:\tt: %2d, p: %2d\n", time_flow, temp->processID);
                 total_turnaround      += temp->execute + temp->waiting;
                 total_response        += temp->waiting;
                 result[result_index++] = *temp;
@@ -116,10 +116,11 @@ void FCFS(Process *p, int n) {
         }
     }
 
-    //test print
+    // test
     print_result(
         result,\
         result_index,\
+        n,\
         total_turnaround,\
         total_waiting,\
         total_response,\

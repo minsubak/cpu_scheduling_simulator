@@ -5,7 +5,7 @@
  *          = non preemeption method - NPP(Non-Preemption Prioity)
  *          - assign to CPU in order of prioity in the ready queue
  * @version 0.1
- * @date    2023-05-10
+ * @date    (first date: 2023-05-10, last date: 2023-05-15)
  * 
  * @copyright Copyright (c) 2023 Minsu Bak
  * 
@@ -22,18 +22,16 @@
  * @brief NPP.h variable info
  *  
  *  type        name             pointer     info
- *  Process     result           y           CPU scheduling result storage structure
- *  double      total_turnaround n           the sum of turnaround
- *  double      total_waiting    n           the sum of waiting
- *  double      total_response   n           the sum of response
- *  void        a                y           compare target variable a
- *  void        b                y           compare target variable b
- *  Process     A                y           compare target variable A(w. using void* a)
- *  Process     B                y           compare target variable B(w. using void* b)
- *  Process     p                y           pointer for process structure
- *  int         n                n           save process count
+ *  Process     result           y           CPU scheduling result storage structure, reference from "process.h"
+ *  Process     p                y           structure for process data storage
+ *  Process     temp             y           pointer of process structure temporary variable
  *  QueueType   ready            n           queue structure for queue(for ready queue)
  *  QueueType   pre              n           queue structure for queue(for previous queue)
+ *  int         total_turnaround n           the sum of turnaround
+ *  int         total_waiting    n           the sum of waiting
+ *  int         total_response   n           the sum of response
+ *  int         result_index     n           index for result array
+ *  int         n                n           save process count
  *  int         i                n           multipurpose utilization variable
  *  int         time_flow        n           flow of time in the scheduler
  *  int         terminate        n           Number of process terminated
@@ -77,8 +75,8 @@ void NPP(Process *p, int n) {
         if(!is_empty_q(&pre)) {
             if(check(&pre).arrival == time_flow) {
                 timeout(&ready, *dispatch(&pre));
-                if(CHECK_PROGRESS) // debug
-                    printf("arrival:\tt: %d, p: %d\n", time_flow, ready.queue->processID);
+                if(CHECK) // debug
+                    printf("arrival:\tt: %2d, p: %2d\n", time_flow, ready.queue->processID);
                 sort(&ready, compare_for_prioity);
             }
         }
@@ -86,11 +84,11 @@ void NPP(Process *p, int n) {
         // dispatch new PCB: if the previous task terminated
         if(check(&ready).arrival <= time_flow && temp == NULL) {
             temp = dispatch(&ready);
-            temp->waiting = time_flow - temp->arrival;
+            temp->waiting  = time_flow - temp->arrival;
             total_waiting += temp->waiting;
-            temp->execute = 0;
-            if(CHECK_PROGRESS) // debug
-                printf("dispatch:\tt: %d, p: %d, w: %d\n", time_flow, temp->processID, temp->waiting);
+            temp->execute  = 0;
+            if(CHECK) // debug
+                printf("dispatch:\tt: %2d, p: %2d, w: %2d\n", time_flow, temp->processID, temp->waiting);
         }
 
         time_flow++;
@@ -102,8 +100,8 @@ void NPP(Process *p, int n) {
 
             // terminate present PCB
             if(temp->remain == 0) {
-                if(CHECK_PROGRESS) // debug
-                    printf("terminate:\tt: %d, p: %d\n", time_flow, temp->processID);
+                if(CHECK) // debug
+                    printf("terminate:\tt: %2d, p: %2d\n", time_flow, temp->processID);
                 total_turnaround      += temp->execute + temp->waiting;
                 total_response        += temp->waiting;
                 result[result_index++] = *temp;
@@ -113,10 +111,11 @@ void NPP(Process *p, int n) {
         }
     }
 
-    //test print
+    // test
     print_result(
         result,\
         result_index,\
+        n,\
         total_turnaround,\
         total_waiting,\
         total_response,\

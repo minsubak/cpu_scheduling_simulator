@@ -6,5 +6,6 @@
         "stdlib.h": "c",
         "stdio.h": "c",
         "compare.h": "c"
-    }
+    },
+    "cmake.configureOnOpen": false
 }

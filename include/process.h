@@ -17,23 +17,29 @@
 /**
  * @brief process.h variable info
  *  
- *  type        name        pointer     info
- *  int         processID   n           process no.
- *  int         arrival     n           process arrival time
- *  int         burst       n           process burst time
- *  int         remain      n           process remain time
- *  int         prioity     n           process prioity
- *  int         turnaround  n           save process turnaround time (will delete soon)
- *  int         response    n           save process response time   (will delete soon)
- *  int         waiting     n           save process waiting time
- *  int         terminate   n           process terminate flag(0|1)
- *  Process     original    y           original process structure
- *  Process     target      y           overwrite target
+ *  type        name        pointer  info
+ *  #define     MAX         n        define MAX is (int)1024
+ *  #define     CHECK       n        debug flag for process status
+ *  Process     p           y        pointer for process structure
+ *  int         processID   n        process no.
+ *  int         arrival     n        process arrival time
+ *  int         burst       n        process burst time(equal remain, but not using calulate)
+ *  int         remain      n        process task remain time(equal burst, but using calculate)
+ *  int         prioity     n        process prioity
+ *  int         waiting     n        record process waiting time
+ *  int         timeout     n        record process time-out time
+ *  int         execute     n        record process execute time
+ *  int         index       n        index for result array
+ *  int         count       n        count of processes
+ *  int         t           n        the sum of turnaround
+ *  int         w           n        the sum of waiting
+ *  int         r           n        the sum of response
+ *  char        name        y        algorithm name 
  * 
  */
 
-#define MAX             1024
-#define CHECK_PROGRESS  true
+#define MAX     1024
+#define CHECK   true
 
 /**
  * @brief structure for process
@@ -43,23 +49,31 @@ typedef struct Process{
 
     int processID;  // process no.
     int arrival;    // process arrival time
-    int burst;      // process burst time
-    int remain;     // process remain time()
+    int burst;      // process burst time(equal remain, but not using calculate)
+    int remain;     // process task remain time(equal burst, but using calculate)
     int prioity;    // process prioity
-    int turnaround; // save process turnaround time
-    int response;   // save process response time
-    int waiting;    // save process waiting time
-    int terminate;  // process terminate flag(0|1)
-    int timeout;
-    int execute;
+    int waiting;    // record process waiting time
+    int timeout;    // record process time-out time
+    int execute;    // record process execute time
 
 } Process;
 
-void print_result(Process *p, int n, int t, int w, int r, char* name) {
+/**
+ * @brief       print for gantt chart data
+ * 
+ * @param p     pointer for process structure
+ * @param index index for result array
+ * @param count count of processes
+ * @param t     the sum of turnaround
+ * @param w     the sum of waiting
+ * @param r     the sum of response
+ * @param name  algorithm name
+ */
+void print_result(Process *p, int index, int count, int t, int w, int r, char* name) {
 
     printf("\n\n%s\n", name);
     printf("index\tPID\tarrival\tburst\tprioity\twaitng\tturnaround\n");
-    for(int i = 0; i < n ;i++)
+    for(int i = 0; i < index ;i++)
         printf("%d\tP%d\t%d\t%d\t%d\t%d\t%d\n", 
         i,\
         p[i].processID,\
@@ -69,9 +83,9 @@ void print_result(Process *p, int n, int t, int w, int r, char* name) {
         p[i].waiting,\
         (p[i].execute + p[i].waiting)
         );
-    printf("turnaround average:\t%.1lf\n", (double)t/n);
-    printf("waiting average:\t%.1lf\n", (double)w/n);
-    printf("response average:\t%.1lf\n", (double)r/n);
+    printf("turnaround average:\t%.1lf\n", (double)t/count);
+    printf("   waiting average:\t%.1lf\n", (double)w/count);
+    printf("  response average:\t%.1lf\n", (double)r/count);
 }
 
 #endif

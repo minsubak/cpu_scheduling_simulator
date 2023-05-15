@@ -5,9 +5,8 @@
  *          = non preemeption method - PP(Preemption Prioity)
  *          - 
  *          - 
- * 
  * @version 0.1
- * @date    2023-05-11
+ * @date    (first date: 2023-05-11)
  * 
  * @copyright Copyright (c) 2023 Minsu Bak
  * 
@@ -24,35 +23,23 @@
  * @brief PP.h variable info
  *  
  *  type        name             pointer     info
- *  Process     result_pp        y           CPU scheduling result_pp storage structure
- *  double      total_turnaround n           the sum of turnaround
- *  double      total_waiting    n           the sum of waiting
- *  double      total_response   n           the sum of response
- *  int         result_index     n           index for result array
- *  void        a                y           compare target variable a
- *  void        b                y           compare target variable b
- *  Process     A                y           compare target variable A(w. using void* a)
- *  Process     B                y           compare target variable B(w. using void* b)
- *  Process     p                y           pointer for process structure
- *  int         n                n           save process count
+ *  Process     result           y           CPU scheduling result storage structure, reference from "process.h"
+ *  Process     p                y           structure for process data storage
+ *  Process     temp             y           pointer of process structure temporary variable
  *  QueueType   ready            n           queue structure for queue(for ready queue)
  *  QueueType   pre              n           queue structure for queue(for previous queue)
+ *  int         total_turnaround n           the sum of turnaround
+ *  int         total_waiting    n           the sum of waiting
+ *  int         total_response   n           the sum of response
+ *  int         result_index     n           index for result array
+ *  int         n                n           save process count
  *  int         i                n           multipurpose utilization variable
  *  int         time_flow        n           flow of time in the scheduler
  *  int         terminate        n           Number of process terminated
  *  
  */
 
-extern Process result_pp[1024];
-
-/**
- * @brief   compare function with qsort()
- * 
- * @param a compare target a
- * @param b compare target b
- * @return  int 
- */
-int compare_for_PP(const void* a, const void* b);
+extern Process result[MAX];
 
 /**
  * @brief   Non-Preemption Prioity
@@ -62,24 +49,25 @@ int compare_for_PP(const void* a, const void* b);
  */
 void PP(Process *p, int n) {
     
+    // create variable, queue and etc
+
     double total_turnaround = 0;   
     double total_waiting    = 0;
     double total_response   = 0;
     int    result_index     = 0;
+    Process *temp        = NULL;
+    QueueType ready, pre;
 
-    // create ready queue & insert process to ready queue
-
-    QueueType ready;
+    // initalize queue
     init_queue(&ready);
-
-    QueueType pre;
     init_queue(&pre);
+
+    // insert process to queue
     for(int i = 0; i < n; i++)
         timeout(&pre, p[i]);
 
     // running PP scheduling
 
-    Process *temp = NULL;
     int time_flow = 0; // flow of time in the scheduler
     int terminate = 0; // Number of process terminated
     while(terminate < n) {
@@ -88,36 +76,34 @@ void PP(Process *p, int n) {
         if(!is_empty_q(&pre)) {
             if(check(&pre).arrival == time_flow) {
                 timeout(&ready, *dispatch(&pre));
-                //printf("arrival! - t: %d\n", time_flow);
-                sort(&ready, compare_for_PP);
+                if(CHECK) // debug
+                    printf("arrival:\tt: %2d, p: %2d\n", time_flow, ready.queue->processID);
+                sort(&ready, compare_for_prioity);
             }
         }
 
-        // dispatch new PCB and time-out present PCB
-        if(!is_empty_q(&ready)) {
-            if(check(&ready).arrival <= time_flow && temp == NULL) {
-                temp = dispatch(&ready);
-                //printf("dispatch - t: %d p: %d w: %d\n", time_flow, temp->processID, temp->waiting);
-                temp->waiting = time_flow - temp->timeout;
-                total_waiting += temp->waiting;
-                temp->execute = 0;
-            }
+        // dispatch new PCB: if the previous task terminated
+        if(check(&ready).arrival <= time_flow && temp == NULL) {
+            temp = dispatch(&ready);
+            temp->waiting = time_flow - temp->timeout;
+            total_waiting += temp->waiting;
+            temp->execute = 0;
+            if(CHECK) // debug
+                printf("dispatch:\tt: %2d, p: %2d, w: %2d\n", time_flow, temp->processID, temp->waiting);
         }
 
-        // check prioity value during operation
+        // check prioity during operation
         if(!is_empty_q(&ready)) {
             if(check(&ready).prioity < temp->prioity) {
+                if(CHECK)
+                    printf("timeout:\tt: %2d, p: %2d\n", time_flow, temp->processID);
                 temp->timeout = time_flow;
-                //printf("timeout! - t: %d p: %d\n", time_flow, temp->processID);
-                temp->turnaround    = temp->execute + temp->waiting;
-                total_turnaround   += temp->turnaround;
-                temp->response      = temp->waiting;
-                total_response     += temp->response;
-                //result_pp[result_index].execute = temp->execute;
-                result_pp[result_index++] = *temp;
+                total_turnaround   += temp->execute + temp->waiting;
+                total_response     += temp->waiting;
+                result[result_index++] = *temp;
                 timeout(&ready, *temp);
                 temp = dispatch(&ready);
-                sort(&ready, compare_for_PP);
+                sort(&ready, compare_for_prioity);
             }            
         }
 
@@ -130,46 +116,27 @@ void PP(Process *p, int n) {
 
             // terminate present PCB
             if(temp->remain == 0) {
-                //printf("terminate! - t: %d p: %d\n", time_flow, temp->processID);
-                temp->turnaround    = temp->execute + temp->waiting;
-                total_turnaround   += temp->turnaround;
-                temp->response      = temp->waiting;
-                total_response     += temp->response;
-                result_pp[result_index++] = *temp;
+                if(CHECK)
+                    printf("terminate:\tt: %2d, p: %2d\n", time_flow, temp->processID);
+                total_turnaround      += temp->execute + temp->waiting;
+                total_response        += temp->waiting;
+                result[result_index++] = *temp;
                 temp = NULL;
                 terminate++;
             }
         }
     }
-    //test print
-    printf("\n\nPP\n");
-    printf("index\tPID\tArrival\tPrioity\tWaiting\tTurnaround\n");
-    for(int i = 0; i < result_index; i++)
-        printf("%d\tP%d\t%d\t%d\t%d\t%d\t\n", 
-        i, 
-        result_pp[i].processID, 
-        result_pp[i].arrival, 
-        result_pp[i].prioity, 
-        result_pp[i].execute,
-        result_pp[i].turnaround
-        );
-    printf("\ntime flow:\t\t%d\naverage turnaround:\t%.2lf\naverage waiting:\t%.2lf\naverage response:\t%.2lf", 
-    time_flow, total_turnaround/n, total_waiting/n, total_response/n);
+
+    //test
+    print_result(
+        result,\
+        result_index,\
+        n,\
+        total_turnaround,\
+        total_waiting,\
+        total_response,\
+        "PP"
+    );
 }
-
-int compare_for_PP(const void* a, const void* b) {
-    
-    // compare target match progress
-
-    Process* A = (Process*) a;
-    Process* B = (Process*) b;
-
-    // if compare target A and B was same
-    if(A->prioity == B->prioity) {
-        return (A->arrival>B->arrival)-(A->arrival<B->arrival);
-    }
-
-    return (A->prioity>B->prioity)-(A->prioity<B->prioity);
-} 
 
 #endif
