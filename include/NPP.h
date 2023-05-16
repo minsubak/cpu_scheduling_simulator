@@ -63,7 +63,7 @@ void NPP(Process *p, int n) {
 
     // insert process to queue
     for(int i = 0; i < n; i++)
-        timeout(&pre, p[i]);
+        enqueue(&pre, p[i]);
 
     // running NPP scheduling
 
@@ -74,7 +74,7 @@ void NPP(Process *p, int n) {
         // if process arrives while time_flow value is increasing
         if(!is_empty_q(&pre)) {
             if(peek(&pre).arrival == time_flow) {
-                timeout(&ready, *dispatch(&pre));
+                enqueue(&ready, *dequeue(&pre));
                 if(CHECK) // debug
                     printf("arrival:\tt: %2d, p: %2d\n", time_flow, ready.queue->processID);
                 sort(&ready, compare_for_prioity);
@@ -83,7 +83,7 @@ void NPP(Process *p, int n) {
         
         // dispatch new PCB: if the previous task terminated
         if(peek(&ready).arrival <= time_flow && temp == NULL) {
-            temp = dispatch(&ready);
+            temp = dequeue(&ready);
             temp->waiting  = time_flow - temp->arrival;
             total_waiting += temp->waiting;
             temp->execute  = 0;

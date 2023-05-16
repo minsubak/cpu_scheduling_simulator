@@ -14,6 +14,9 @@
 // standard libaray
 #include <stdbool.h>
 
+// external library & user define library
+#include "queue.h"
+
 /**
  * @brief process.h variable info
  *  

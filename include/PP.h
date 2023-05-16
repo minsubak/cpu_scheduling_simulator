@@ -64,7 +64,7 @@ void PP(Process *p, int n) {
 
     // insert process to queue
     for(int i = 0; i < n; i++)
-        timeout(&pre, p[i]);
+        enqueue(&pre, p[i]);
 
     // running PP scheduling
 
@@ -75,7 +75,7 @@ void PP(Process *p, int n) {
         // if process arrives while time_flow value is increasing
         if(!is_empty_q(&pre)) {
             if(peek(&pre).arrival == time_flow) {
-                timeout(&ready, *dispatch(&pre));
+                enqueue(&ready, *dequeue(&pre));
                 if(CHECK) // debug
                     printf("arrival:\tt: %2d, p: %2d\n", time_flow, ready.queue->processID);
                 sort(&ready, compare_for_prioity);
@@ -84,7 +84,7 @@ void PP(Process *p, int n) {
 
         // dispatch new PCB: if the previous task terminated
         if(peek(&ready).arrival <= time_flow && temp == NULL) {
-            temp = dispatch(&ready);
+            temp = dequeue(&ready);
             temp->waiting  = time_flow - temp->timeout;
             total_waiting += temp->waiting;
             temp->execute  = 0;
@@ -101,8 +101,13 @@ void PP(Process *p, int n) {
                 total_turnaround   += temp->execute + temp->waiting;
                 total_response     += temp->waiting;
                 result[result_index++] = *temp;
-                timeout(&ready, *temp);
-                temp = dispatch(&ready);
+                enqueue(&ready, *temp);
+                temp = dequeue(&ready);
+                temp->waiting  = time_flow - temp->timeout;
+                total_waiting += temp->waiting;
+                temp->execute  = 0;
+                if(CHECK) // debug
+                    printf("dispatch:\tt: %2d, p: %2d, w: %2d\n", time_flow, temp->processID, temp->waiting);
                 sort(&ready, compare_for_prioity);
             }            
         }

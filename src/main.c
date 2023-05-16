@@ -76,6 +76,7 @@ int main() {
     int timeSlice;
     fscanf(fp, "%d\n", &timeSlice);
 
+    init_result(result);
     // First Come First Served
     //FCFS(p, count);
     //init_result(result);

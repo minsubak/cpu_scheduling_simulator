@@ -35,7 +35,7 @@
  * 
  */
 
-#define MAX_Q 20
+#define MAX_Q 100
 
 typedef struct QueueType {
 
@@ -82,7 +82,7 @@ int is_full_q(QueueType *q) {
  * @param q     pointer for queue structure
  * @param item  insert target
  */
-void timeout(QueueType *q, Process item) {
+void enqueue(QueueType *q, Process item) {
 
     if(is_full_q(q)) {
         fprintf(stderr, "queue is full!\n");
@@ -98,7 +98,7 @@ void timeout(QueueType *q, Process item) {
  * @param q pointer for queue structure
  * @return  Process
  */
-Process* dispatch(QueueType *q) {
+Process* dequeue(QueueType *q) {
 
     if(is_empty_q(q)) {
         fprintf(stderr, "queue is empty!\n");
