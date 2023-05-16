@@ -70,4 +70,21 @@ int compare_for_prioity(const void* a, const void* b) {
     return (A->prioity>B->prioity)-(A->prioity<B->prioity);
 }
 
+/**
+ * @brief   compare remain function with qsort
+ * 
+ * @param a compare target a
+ * @param b compare target b
+ * @return int 
+ */
+int compare_for_remain(const void* a, const void* b) {
+    
+    // compare target match progress
+
+    Process* A = (Process*) a;
+    Process* B = (Process*) b;
+
+    return (A->remain>B->remain)-(A->remain<B->remain);
+}
+
 #endif

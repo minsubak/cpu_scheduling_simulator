@@ -97,15 +97,15 @@ void PP(Process *p, int n) {
             if(peek(&ready).prioity < temp->prioity) {
                 if(CHECK)
                     printf("timeout:\tt: %2d, p: %2d\n", time_flow, temp->processID);
-                temp->timeout = time_flow;
-                total_turnaround   += temp->execute + temp->waiting;
-                total_response     += temp->waiting;
+                temp->timeout          = time_flow;
+                total_turnaround      += temp->execute + temp->waiting;
+                total_response        += temp->waiting;
                 result[result_index++] = *temp;
                 enqueue(&ready, *temp);
                 temp = dequeue(&ready);
-                temp->waiting  = time_flow - temp->timeout;
-                total_waiting += temp->waiting;
-                temp->execute  = 0;
+                temp->waiting          = time_flow - temp->timeout;
+                total_waiting         += temp->waiting;
+                temp->execute          = 0;
                 if(CHECK) // debug
                     printf("dispatch:\tt: %2d, p: %2d, w: %2d\n", time_flow, temp->processID, temp->waiting);
                 sort(&ready, compare_for_prioity);
