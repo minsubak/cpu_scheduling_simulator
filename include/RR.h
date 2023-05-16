@@ -34,7 +34,7 @@
  *  int         n                n          save process count
  *  int         t                n          time slice(quantom)
  *  int         i                n          multipurpose utilization variable
- *  int         time_flow        n          flow of time in the scheduler
+ *  int         time             n          flow of time in the scheduler
  *  int         terminate        n          Number of process terminated
  *  
  */
@@ -72,47 +72,47 @@ void RR(Process *p, int n, int t) {
 
     // running RR scheduling
 
-    int time_flow = 0;
+    int time = 0;
     int terminate = 0;
     while(terminate < n) {
 
-        // if process arrives while time_flow value is increasing
+        // if process arrives while time value is increasing
         if(!is_empty_q(&pre)) {
-            if(peek(&pre).arrival == time_flow) {
+            if(peek(&pre).arrival == time) {
                 enqueue(&ready, *dequeue(&pre));
                 if(CHECK) // debug
-                    printf("arrival:\tt: %2d, p: %2d\n", time_flow, ready.queue->processID);
+                    printf("arrival:\tt: %2d, p: %2d\n", time, ready.queue->processID);
             }
         }
 
         // dispatch new PCB: if the previous task terminated
-        if(peek(&ready).arrival <= time_flow && temp == NULL) {
+        if(peek(&ready).arrival <= time && temp == NULL) {
             temp = dequeue(&ready);
-            temp->waiting  = time_flow - temp->timeout;
+            temp->waiting  = time - temp->timeout;
             total_waiting += temp->waiting;
             temp->execute  = 0;
             if(CHECK) // debug
-                printf("dispatch:\tt: %2d, p: %2d, w: %2d\n", time_flow, temp->processID, temp->waiting);
+                printf("dispatch:\tt: %2d, p: %2d, w: %2d\n", time, temp->processID, temp->waiting);
         }
 
         // 
         if(temp->execute == t) {
             if(CHECK) // debug
-                printf("timeout:\tt: %2d, p: %2d, w: %2d\n", time_flow, temp->processID, temp->waiting);
-            temp->timeout          = time_flow;
+                printf("timeout:\tt: %2d, p: %2d, w: %2d\n", time, temp->processID, temp->waiting);
+            temp->timeout          = time;
             total_turnaround      += temp->execute + temp->waiting;
             total_response        += temp->waiting;
             result[result_index++] = *temp;
             enqueue(&ready, *temp);
             temp = dequeue(&ready);
-            temp->waiting          = time_flow - temp->timeout;
+            temp->waiting          = time - temp->timeout;
             total_waiting         += temp->waiting;
             temp->execute          = 0;
             if(CHECK) // debug
-                printf("dispatch:\tt: %2d, p: %2d, w: %2d\n", time_flow, temp->processID, temp->waiting);
+                printf("dispatch:\tt: %2d, p: %2d, w: %2d\n", time, temp->processID, temp->waiting);
         }
         
-        time_flow++;
+        time++;
 
         // scheduler task progress
         if(temp != NULL) {
@@ -122,7 +122,7 @@ void RR(Process *p, int n, int t) {
             // terminate present PCB
             if(temp->remain == 0) {
                 if(CHECK) // debug
-                    printf("terminate:\tt: %2d, p: %2d\n", time_flow, temp->processID);
+                    printf("terminate:\tt: %2d, p: %2d\n", time, temp->processID);
                 total_turnaround      += temp->execute + temp->waiting;
                 total_response        += temp->waiting;
                 result[result_index++] = *temp;

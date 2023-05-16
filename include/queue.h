@@ -26,7 +26,7 @@
  * @brief queue.h variable info
  * 
  *  type        name        pointer     info
- *  #define     MAX_Q         n           queue storage size
+ *  #define     MAX_Q       n           queue storage size
  *  int         front       n           queue front data flag
  *  int         rear        n           queue rear data flag
  *  Process     queue       y           structre queue array for Process data storage
