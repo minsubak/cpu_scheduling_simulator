@@ -68,8 +68,8 @@ void PP(Process *p, int n) {
 
     // running PP scheduling
 
-    int time = 0; // flow of time in the scheduler
-    int terminate = 0; // Number of process terminated
+    int time = 0;
+    int terminate = 0;
     while(terminate < n) {
 
         // if process arrives while time value is increasing

@@ -55,7 +55,6 @@ void RR(Process *p, int n, int t) {
     double total_waiting    = 0;
     double total_response   = 0;
     int    result_index     = 0;
-    int    array[MAX]  = { 0, };
     Process *temp        = NULL;
     QueueType ready, pre;
 

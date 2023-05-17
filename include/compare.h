@@ -87,4 +87,22 @@ int compare_for_remain(const void* a, const void* b) {
     return (A->remain>B->remain)-(A->remain<B->remain);
 }
 
+/**
+ * @brief   compare prioity, but using special formula function with qsort
+ *          prioity = (waiting + burst) / burst
+ * 
+ * @param a compare target a
+ * @param b compare target b
+ * @return int 
+ */
+int compare_for_HRN(const void* a, const void* b) {
+
+    // compare target match progress
+
+    Process* A = (Process*) a;
+    Process* B = (Process*) b;
+
+    return (((A->waiting + A->burst) / A->burst) > ((B->waiting + B->burst) / B->burst)) - (((A->waiting + A->burst) / A->burst) < ((B->waiting + B->burst) / B->burst));
+}
+
 #endif

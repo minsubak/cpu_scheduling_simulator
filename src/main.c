@@ -78,31 +78,31 @@ int main() {
 
     init_result(result);
     // First Come First Served
-    FCFS(p, count);
+    //FCFS(p, count);
     init_result(result);
 
     // Shortest Job First
-    SJF(p, count);
+    //SJF(p, count);
     init_result(result);
 
     // Non-Preemption Prioity
-    NPP(p, count);
+    //NPP(p, count);
     init_result(result);
     
     // Preemption Prioity
-    PP(p, count);
+    //PP(p, count);
     init_result(result);
 
     // Round-Robin
-    RR(p, count, timeSlice);
+    //RR(p, count, timeSlice);
     init_result(result);
 
     // Shortest Remaining Time
-    SRT(p, count, timeSlice);
+    //SRT(p, count);
     init_result(result);
 
     // Highest Responese Ratio Next
-    // HRN(p, count, timeSlice);
+    HRN(p, count, timeSlice);
 
     // memory allocate disable
     free(p);

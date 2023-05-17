@@ -32,7 +32,6 @@
  *  int         total_response   n          the sum of response
  *  int         result_index     n          index for result array
  *  int         n                n          save process count
- *  int         t                n          time slice(quantom)
  *  int         i                n          multipurpose utilization variable
  *  int         time             n          flow of time in the scheduler
  *  int         terminate        n          Number of process terminated
@@ -72,7 +71,7 @@ void HRN(Process *p, int n, int t) {
                 enqueue(&ready, *dequeue(&pre));
                 if(CHECK) // debug
                     printf("arrival:\tt: %2d, p: %2d\n", time, ready.queue->processID);
-                sort(&ready, compare_for_burst);
+                sort(&ready, compare_for_HRN);
             }
         }
         

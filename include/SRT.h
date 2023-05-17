@@ -32,7 +32,6 @@
  *  int         total_response   n          the sum of response
  *  int         result_index     n          index for result array
  *  int         n                n          save process count
- *  int         t                n          time slice(quantom)
  *  int         i                n          multipurpose utilization variable
  *  int         time             n          flow of time in the scheduler
  *  int         terminate        n          Number of process terminated
@@ -41,7 +40,7 @@
 
 extern Process result[MAX];
 
-void SRT(Process *p, int n, int t) {
+void SRT(Process *p, int n) {
     
     // create variable, queue and etc
 
@@ -49,7 +48,6 @@ void SRT(Process *p, int n, int t) {
     double total_waiting    = 0;
     double total_response   = 0;
     int    result_index     = 0;
-    int    array[MAX]  = { 0, };
     Process *temp        = NULL;
     QueueType ready, pre;
 
@@ -58,12 +56,12 @@ void SRT(Process *p, int n, int t) {
     init_queue(&pre);
 
     // insert process to queue
-    for(int i =0; i < n; i++)
+    for(int i = 0; i < n; i++)
         enqueue(&pre, p[i]);
 
     // sort by arrival
     sort(&pre, compare_for_arrival);
-
+    
     // running RR scheduling
 
     int time = 0;
