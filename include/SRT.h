@@ -91,7 +91,7 @@ void SRT(Process *p, int n, int t) {
         }
 
         // 
-        if(temp->execute == t) {
+        if(peek(&ready).remain < temp->remain && !is_empty_q(&ready)) {
             if(CHECK) // debug
                 printf("timeout:\tt: %2d, p: %2d, w: %2d\n", time, temp->processID, temp->waiting);
             temp->timeout          = time;

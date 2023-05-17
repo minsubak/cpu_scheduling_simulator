@@ -78,27 +78,27 @@ int main() {
 
     init_result(result);
     // First Come First Served
-    //FCFS(p, count);
-    //init_result(result);
+    FCFS(p, count);
+    init_result(result);
 
     // Shortest Job First
-    //SJF(p, count);
-    //init_result(result);
+    SJF(p, count);
+    init_result(result);
 
     // Non-Preemption Prioity
-    //NPP(p, count);
-    //init_result(result);
+    NPP(p, count);
+    init_result(result);
     
     // Preemption Prioity
-    //PP(p, count);
-    //init_result(result);
+    PP(p, count);
+    init_result(result);
 
     // Round-Robin
     RR(p, count, timeSlice);
-    //init_result(result);
+    init_result(result);
 
     // Shortest Remaining Time
-    // SRT(p, count, timeSlice);
+    SRT(p, count, timeSlice);
     init_result(result);
 
     // Highest Responese Ratio Next
