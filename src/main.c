@@ -43,8 +43,8 @@ int main(void) {
     // search and load "data.txt" files with process data
 
     FILE *fp = fopen("data.txt", "r");
-    if(fp == NULL) error("file not found");
-    else printf("file found!\n\n");
+    if(fp == NULL) TraceLog(LOG_INFO, "file not found!");
+    else TraceLog(LOG_INFO, "file found!");
 
     // read process count and allocate memory
 
