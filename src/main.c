@@ -73,6 +73,27 @@ int main(void) {
     int quantum;
     fscanf(fp, "%d", &quantum);
 
+    // First Come First Served
+    FCFS(p, count, total);
+
+    // Shortest Job First
+    SJF(p, count, total);
+
+    // Highest Responese Ratio Next
+    HRN(p, count, total);
+
+    // Non-Preemption Prioity
+    NPP(p, count, total);
+    
+    // Preemption Prioity
+    PP(p, count, total);
+
+    // Round-Robin
+    RR(p, count, total, quantum);
+
+    // Shortest Remaining Time
+    SRT(p, count, total);
+
     // default initalize settings
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "ToyProject");
     SetTargetFPS(TARGET_FPS);
@@ -119,26 +140,3 @@ int main(void) {
     fclose(fp);
     return 0;
 }
-
-/*
-    // First Come First Served
-    FCFS(p, count, total);
-
-    // Shortest Job First
-    SJF(p, count, total);
-
-    // Highest Responese Ratio Next
-    HRN(p, count, total);
-
-    // Non-Preemption Prioity
-    NPP(p, count, total);
-    
-    // Preemption Prioity
-    PP(p, count, total);
-
-    // Round-Robin
-    RR(p, count, total, quantum);
-
-    // Shortest Remaining Time
-    SRT(p, count, total);
-*/
