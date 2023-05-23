@@ -24,8 +24,7 @@
  *  
  *  type        name        pointer     info
  *  FILE        fp          y           file pointer for file I/O and management
- *  Process     o           y           structure for process data storage(original)
- *  Process     t           y           structure for process data storage(target)
+ *  Process     p           y           structure for process data storage
  *  int         i           n           multipurpose utilization variable
  *  int         count       n           save process count
  *  int         quantum     n           save simulator environment variable basic value
