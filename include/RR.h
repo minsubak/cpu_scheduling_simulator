@@ -119,7 +119,7 @@ void RR(Process *p, int n, int t, int q) {
         // check the response time of the process 
         if(response[temp->processID] == 0) {
             response[temp->processID] = -1;
-            total_response += time;
+            total_response += time - temp->arrival;
         }
         
         gantt[time++] = *temp;

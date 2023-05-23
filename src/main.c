@@ -67,25 +67,25 @@ int main() {
     fscanf(fp, "%d", &quantum);
 
     // First Come First Served
-    //FCFS(p, count, total);
+    FCFS(p, count, total);
 
     // Shortest Job First
-    //SJF(p, count, total);
+    SJF(p, count, total);
 
     // Highest Responese Ratio Next
-    //HRN(p, count, total);
+    HRN(p, count, total);
 
     // Non-Preemption Prioity
-    //NPP(p, count, total);
+    NPP(p, count, total);
     
     // Preemption Prioity
-    //PP(p, count, total);
+    PP(p, count, total);
 
     // Round-Robin
     RR(p, count, total, quantum);
 
     // Shortest Remaining Time
-    //SRT(p, count, total);
+    SRT(p, count, total);
 
     // memory allocate disable
     free(p);
