@@ -31,8 +31,6 @@
  *  
  */
 
-Process RESET;
-
 int main() {
     
     // search and load "data.txt" files with process data
