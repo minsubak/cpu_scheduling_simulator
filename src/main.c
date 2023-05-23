@@ -30,15 +30,7 @@
  *  
  */
 
-Process result[MAX];
 Process RESET;
-
-/**
- * @brief   initalize result array
- * 
- * @param p pointer for process structure, initalize target
- */
-void init_result(Process* r);
 
 int main() {
     
@@ -55,9 +47,9 @@ int main() {
     Process *p = malloc(sizeof(Process)*count);
 
     // read and save process data
-    
-    int i = 0;
-    while(i < count) {
+
+    int total = 0;
+    for(int i = 0; i < count; i++) {
         fscanf(fp, "%d %d %d %d\n",\
         &p[i].processID,\
         &p[i].arrival,\
@@ -68,50 +60,35 @@ int main() {
         p[i].timeout = p[i].arrival;
         p[i].waiting = 0;
         p[i].execute = 0;
-        i++;
+        total += p[i].burst;
     }
 
-    // read simulator environment variable basic value
+    int quantum;
+    fscanf(fp, "%d", &quantum);
 
-    int timeSlice;
-    fscanf(fp, "%d\n", &timeSlice);
-
-    init_result(result);
     // First Come First Served
-    //FCFS(p, count);
-    init_result(result);
+    //FCFS(p, count, total);
 
     // Shortest Job First
-    //SJF(p, count);
-    init_result(result);
-
-    // Non-Preemption Prioity
-    //NPP(p, count);
-    init_result(result);
-    
-    // Preemption Prioity
-    //PP(p, count);
-    init_result(result);
-
-    // Round-Robin
-    //RR(p, count, timeSlice);
-    init_result(result);
-
-    // Shortest Remaining Time
-    //SRT(p, count);
-    init_result(result);
+    //SJF(p, count, total);
 
     // Highest Responese Ratio Next
-    HRN(p, count, timeSlice);
+    //HRN(p, count, total);
+
+    // Non-Preemption Prioity
+    //NPP(p, count, total);
+    
+    // Preemption Prioity
+    //PP(p, count, total);
+
+    // Round-Robin
+    //RR(p, count, total, quantum);
+
+    // Shortest Remaining Time
+    SRT(p, count, total);
 
     // memory allocate disable
     free(p);
     fclose(fp);
     return 0;
-}
-
-void init_result(Process* p) {
-    
-    for(int i = 0; i < MAX; i++)
-        p[i] = RESET;
 }

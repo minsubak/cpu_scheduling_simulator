@@ -21,7 +21,6 @@
  * @brief process.h variable info
  *  
  *  type        name        pointer  info
- *  #define     MAX         n        define MAX is (int)1024
  *  #define     CHECK       n        debug flag for process status
  *  Process     p           y        pointer for process structure
  *  int         processID   n        process no.
@@ -33,16 +32,11 @@
  *  int         timeout     n        record process time-out time
  *  int         execute     n        record process execute time
  *  int         index       n        index for result array
- *  int         count       n        count of processes
- *  int         t           n        the sum of turnaround
- *  int         w           n        the sum of waiting
- *  int         r           n        the sum of response
  *  char        name        y        algorithm name 
  * 
  */
 
-#define MAX     1024
-#define CHECK   true
+#define CHECK   false
 
 /**
  * @brief structure for process
@@ -67,12 +61,9 @@ typedef struct Process{
  * @param p     pointer for process structure
  * @param index index for result array
  * @param count count of processes
- * @param t     the sum of turnaround
- * @param w     the sum of waiting
- * @param r     the sum of response
  * @param name  algorithm name
  */
-void print_result(Process *p, int index, int count, int t, int w, int r, char* name) {
+void print_result(Process *p, int index, int count, char* name) {
 
     printf("\n\n%s\n", name);
     printf("index\tPID\tarrival\tburst\tprioity\twaitng\tturnaround\n");
@@ -86,9 +77,6 @@ void print_result(Process *p, int index, int count, int t, int w, int r, char* n
         p[i].waiting,\
         (p[i].execute + p[i].waiting)
         );
-    printf("turnaround average:\t%.1lf\n", (double)t/count);
-    printf("   waiting average:\t%.1lf\n", (double)w/count);
-    printf("  response average:\t%.1lf\n", (double)r/count);
 }
 
 #endif
