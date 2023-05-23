@@ -129,13 +129,7 @@ void SJF(Process *p, int n, int t) {
     }
 
     // gantt chart test
-    /*
-    print_gantt(
-        gantt,\
-        time,\
-        n,\
-        "SJF"
-    ); */
+    //print_gantt(gantt, time, n, "SJF");
 
     // print SJF scheduling result
     print_result(result, n, "SJF", total_turnaround, total_waiting, total_response);

@@ -147,13 +147,7 @@ void PP(Process *p, int n, int t) {
     }
 
     // gantt chart test
-    /*
-    print_gantt(
-        gantt,\
-        time,\
-        n,\
-        "PP"
-    ); */
+    //print_gantt(gantt, time, n, "PP");
         
     // print PP scheduling result
     print_result(result, n, "PP", total_turnaround, total_waiting, total_response);

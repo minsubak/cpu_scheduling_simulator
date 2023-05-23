@@ -145,13 +145,7 @@ void RR(Process *p, int n, int t, int q) {
     }
 
     // gantt chart test
-    /*
-    print_gantt(
-        gantt,\
-        time,\
-        n,\
-        "RR"
-    ); */
+    //print_gantt(gantt, time, n, "RR");
             
     // print RR scheduling result
     print_result(result, n, "RR", total_turnaround, total_waiting, total_response);

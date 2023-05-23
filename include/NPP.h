@@ -129,13 +129,7 @@ void NPP(Process *p, int n, int t) {
     }
 
     // gantt chart test
-    /*
-    print_gantt(
-        gantt,\
-        time,\
-        n,\
-        "NPP"
-    ); */
+    //print_gantt(gantt, time, n, "NPP");
     
     // print NPP scheduling result
     print_result(result, n, "NPP", total_turnaround, total_waiting, total_response);

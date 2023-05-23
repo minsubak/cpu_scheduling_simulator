@@ -128,13 +128,7 @@ void FCFS(Process *p, int n, int t) {
     }
 
     // gantt chart test 
-    /*
-    print_gantt(
-        gantt,\
-        time,\
-        n,\
-        "FCFS"
-    ); */
+    //print_gantt(gantt, time, n, "FCFS");
 
     // print FCFS scheduling result
     print_result(result, n, "FCFS", total_turnaround, total_waiting, total_response);

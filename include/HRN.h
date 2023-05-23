@@ -129,13 +129,7 @@ void HRN(Process *p, int n, int t) {
     }
 
     // gantt chart test
-    /*
-    print_gantt(
-        gantt,\
-        time,\
-        n,\
-        "HRN"
-    ); */
+    //print_gantt(gantt, time, n, "HRN");
 
     // print HRN scheduling result
     print_result(result, n, "HRN", total_turnaround, total_waiting, total_response);

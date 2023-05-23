@@ -145,13 +145,7 @@ void SRT(Process *p, int n, int t) {
     }
 
     // test
-    /*
-    print_gantt(
-        gantt,\
-        time,\
-        n,\
-        "SRT"
-    ); */
+    //print_gantt(gantt, time, n, "SRT");
 
     // print SRT scheduling result
     print_result(result, n, "SRT", total_turnaround, total_waiting, total_response);
