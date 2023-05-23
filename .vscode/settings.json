@@ -5,7 +5,8 @@
         "process.h": "c",
         "stdlib.h": "c",
         "stdio.h": "c",
-        "compare.h": "c"
+        "compare.h": "c",
+        "queue.h": "c"
     },
     "cmake.configureOnOpen": false
 }

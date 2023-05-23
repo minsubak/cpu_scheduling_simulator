@@ -59,11 +59,11 @@ typedef struct Process{
  * @brief       print for gantt chart data
  * 
  * @param p     pointer for process structure
- * @param index index for result array
+ * @param index index for gantt array
  * @param count count of processes
  * @param name  algorithm name
  */
-void print_result(Process *p, int index, int count, char* name) {
+void print_gantt(Process *p, int index, int count, char* name) {
 
     printf("\n\n%s\n", name);
     printf("index\tPID\tarrival\tburst\tprioity\twaitng\tturnaround\n");
@@ -77,6 +77,35 @@ void print_result(Process *p, int index, int count, char* name) {
         p[i].waiting,\
         (p[i].execute + p[i].waiting)
         );
+}
+
+/**
+ * @brief       print for result data
+ * 
+ * @param p     pointer for process structure
+ * @param count count
+ * @param name  algorithm name
+ * @param t     total turnaround
+ * @param w     total waiting
+ * @param r     total response
+ */
+void print_result(Process *p, int count, char* name, int t, int w, int r) {
+
+    printf("\n\n%s\n", name);
+    printf("index\tPID\tarrival\tburst\tprioity\twaitng\tturnaround\n");
+    for(int i = 0; i < count ;i++)
+        printf("%d\tP%d\t%d\t%d\t%d\t%d\t%d\n", 
+        i,\
+        p[i].processID,\
+        p[i].arrival,\
+        p[i].burst,\
+        p[i].prioity,\
+        p[i].waiting,\
+        (p[i].execute + p[i].waiting)
+        );
+    printf("turnaround average:\t%.1lf\n", (double)t/count);
+    printf("   waiting average:\t%.1lf\n", (double)w/count);
+    printf("  response average:\t%.1lf\n", (double)r/count);  
 }
 
 #endif

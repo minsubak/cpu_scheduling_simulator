@@ -82,10 +82,10 @@ int main() {
     //PP(p, count, total);
 
     // Round-Robin
-    //RR(p, count, total, quantum);
+    RR(p, count, total, quantum);
 
     // Shortest Remaining Time
-    SRT(p, count, total);
+    //SRT(p, count, total);
 
     // memory allocate disable
     free(p);
