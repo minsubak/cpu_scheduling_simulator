@@ -3,7 +3,7 @@
  * @author  Mindou (minsu5875@naver.com)
  * @brief   user define library for compare function for qsort()
  * @version 0.1
- * @date    (first date: 2023-05-15)
+ * @date    (first date: 2023-05-15, last date: 2023-05-24)
  * 
  * @copyright Copyright (c) 2023 Minsu Bak
  * 
@@ -15,6 +15,17 @@
 // external library && user define library
 #include "process.h"
 #include "queue.h"
+
+/**
+ * @brief compare.h variable info
+ *  
+ *  type        name        pointer     info
+ *  const void  a           y           compare target a
+ *  const void  b           y           compare traget b
+ *  Process     A           y           compare target A(w. using a)
+ *  Process     B           y           compare target B(w. using b)
+ * 
+ */
 
 /**
  * @brief   compare arrival function with qsort

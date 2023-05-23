@@ -26,7 +26,8 @@
  *  Process     t           y           structure for process data storage(target)
  *  int         i           n           multipurpose utilization variable
  *  int         count       n           save process count
- *  int         timeSlice   n           save simulator environment variable basic value
+ *  int         quantum     n           save simulator environment variable basic value
+ *  int         total       n           save scheduler total burst time
  *  
  */
 

@@ -54,17 +54,21 @@ void SJF(Process *p, int n, int t) {
     
     // create variable, queue and etc
 
-    int total_turnaround = 0;                   // the sum of turnaround
-    int total_waiting    = 0;                   // the sum of waiting
-    int total_response   = 0;                   // the sum of response
-    int time             = 0;                   // flow of time in the scheduler
-    int terminate        = 0;                   // number of process terminated
-    int response[5] = { 0, };                   // array for check the response time of the process 
-    Process *temp  = NULL;                      // pointer of process structure temporary variable
-    Process *gantt = malloc(sizeof(Process)*t); // process task info save for gantt chart
-    Process result[5];                          // structure for CPU scheduling result save
-    QueueType ready;                            // queue structure for queue(for ready queue)
-    QueueType pre;                              // queue structure for queue(for previous queue)
+    int total_turnaround = 0;                    // the sum of turnaround
+    int total_waiting    = 0;                    // the sum of waiting
+    int total_response   = 0;                    // the sum of response
+    int time             = 0;                    // flow of time in the scheduler
+    int terminate        = 0;                    // number of process terminated
+    int *response   = malloc(sizeof(int)*n);     // array for check the response time of the process 
+    Process *gantt  = malloc(sizeof(Process)*t); // process task info save for gantt chart
+    Process *result = malloc(sizeof(Process)*n); // structure for CPU scheduling result save
+    Process *temp  = NULL;                       // pointer of process structure temporary variable
+    QueueType ready;                             // queue structure for queue(for ready queue)
+    QueueType pre;                               // queue structure for queue(for previous queue)
+
+    // initalize array
+    for(int i = 0; i < n; i++)
+        response[i] = 0;
 
     // initalize queue
     init_queue(&ready);
@@ -137,7 +141,9 @@ void SJF(Process *p, int n, int t) {
     print_result(result, n, "SJF", total_turnaround, total_waiting, total_response);
 
     // memory allocate disable
+    free(response);
     free(gantt);
+    free(result);
 }
 
 #endif

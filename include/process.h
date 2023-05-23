@@ -3,7 +3,7 @@
  * @author  Mindou (minsu5875@naver.com)
  * @brief   CPU scheduler simulator process header
  * @version 0.1
- * @date    2023-05-03
+ * @date    (frist date: 2023-05-03, last date: 2023-05-24)
  * 
  * @copyright Copyright (c) 2023 Minsu Bak
  * 
@@ -33,6 +33,9 @@
  *  int         execute     n        record process execute time
  *  int         index       n        index for result array
  *  char        name        y        algorithm name 
+ *  int         t           n        total turnaround
+ *  int         w           n        total waiting
+ *  int         r           n        total response
  * 
  */
 
