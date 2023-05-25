@@ -32,18 +32,43 @@
  *  
  */
 
-#define TARGET_FPS         60                           // target fps
-#define SCREEN_WIDTH       1024                         // screen size: width
-#define SCREEN_HEIGHT      768                          // screen size: height
-#define BACKGROUND_COLOR   ((Color) { 26, 26, 26, 255 })// screen background basic color
+#define TARGET_FPS          60                               // target fps
+#define SCREEN_WIDTH        1024                             // screen size: width
+#define SCREEN_HEIGHT       768                              // screen size: height
+#define BACKGROUND_COLOR    ((Color) { 255, 255, 255, 255 }) // screen background basic color
+#define BUTTON_CORLOR       ((Color) {  30,  30,  30, 255 }) // button background basic color
+
+bool FILE_NOT_FOUND       = false;
+
+const Vector2 btnPos[] = {                         // define button display position
+    {.x = 30, .y =                       40},
+    {.x = 30, .y = SCREEN_HEIGHT * 0.1 + 40},
+    {.x = 30, .y = SCREEN_HEIGHT * 0.2 + 40},
+    {.x = 30, .y = SCREEN_HEIGHT * 0.3 + 40},
+    {.x = 30, .y = SCREEN_HEIGHT * 0.4 + 40},
+    {.x = 30, .y = SCREEN_HEIGHT * 0.5 + 40},
+    {.x = 30, .y = SCREEN_HEIGHT * 0.6 + 40}
+};
+
+const char* algorithm[] = {
+    "FCFS",
+    "SJF",
+    "HRN",
+    "NPP",
+    "PP",
+    "RR",
+    "SRT"
+};
 
 int main(void) {    
 
     // search and load "data.txt" files with process data
 
     FILE *fp = fopen("data.txt", "r");
-    if(fp == NULL) TraceLog(LOG_INFO, "file not found!");
-    else TraceLog(LOG_INFO, "file found!");
+    if(fp == NULL) {
+        TraceLog(LOG_WARNING, "file not found!");
+        FILE_NOT_FOUND = true;
+    } else TraceLog(LOG_INFO, "file found!");
 
     // read process count and allocate memory
 
@@ -69,9 +94,10 @@ int main(void) {
     }
 
     // get time quantum
+
     int quantum;
     fscanf(fp, "%d", &quantum);
-
+/* 
     // First Come First Served
     FCFS(p, count, total);
 
@@ -91,51 +117,97 @@ int main(void) {
     RR(p, count, total, quantum);
 
     // Shortest Remaining Time
-    SRT(p, count, total);
+    SRT(p, count, total); */
 
-    // default initalize settings
-    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "ToyProject");
+    // default config settings
+    //SetConfigFlags(FLAG_WINDOW_RESIZABLE);
+    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "CPU Scheduling Simulator with raylib");
     SetTargetFPS(TARGET_FPS);
 
-    // 6PM 로고 파일로 텍스처를 생성한다.
-    // 텍스처를 생성하기 전에 반드시 `InitWindow()`를 호출해야 함을 기억하자!
-    Texture2D texture = LoadTexture("res/images/6pm-logo_512x512.png");
-    
-    // 게임 화면의 경계를 나타내는 직사각형을 정의한다.
-    const Rectangle bounds = { .width = SCREEN_WIDTH, .height = SCREEN_HEIGHT };
+    // loading and creating texture image from `res` folder
+    // WARN: be sure to call `InitWindows()` before creating a texture image 
 
-    // 6PM 로고를 그릴 위치를 정의한다.
-    const Vector2 position = { 
-        0.5f * (SCREEN_WIDTH - texture.width),
-        0.5f * (SCREEN_HEIGHT - texture.height)
+    Texture2D logo_6pm_256x256      = LoadTexture("res/images/6pm-logo_256x256.png");
+    Texture2D logo_raylib_128x128   = LoadTexture("res/images/raylib-logo_128x128.png");
+    Texture2D card_image            = LoadTexture("res/images/cards_70x10.png");
+    
+    // define a rectangle that represents the boundary of the screen
+
+    const Rectangle bounds = { .width = SCREEN_WIDTH, .height = SCREEN_HEIGHT };
+    const Rectangle button = { .width = 100, .height = 62 };
+
+    // define position for drawing logo
+
+    const Vector2 logo_6pm_position = { 
+        0.8f * (SCREEN_WIDTH - logo_6pm_256x256.width),
+        1.07f * (SCREEN_HEIGHT - logo_6pm_256x256.height)
     };
 
-    // 사용자가 창을 닫거나, `ESC` 키를 누르기 전까지 반복한다.
-    while (!WindowShouldClose()) {
-        // 게임 화면을 그리기 위해 프레임 버퍼를 초기화한다.
-        BeginDrawing();
-        
-        // 프레임 버퍼를 검은색으로 채운다.
-        ClearBackground(BLACK);
+    const Vector2 logo_raylib_position = {
+        0.95f * (SCREEN_WIDTH - logo_raylib_128x128.width),
+        0.95f * (SCREEN_HEIGHT - logo_raylib_128x128.height)
+    };
 
-        // 게임 화면에 어두운 회색 색상의 직사각형을 그린다.
-        DrawRectangleRec(bounds, BACKGROUND_COLOR);
+    if(FILE_NOT_FOUND == true) {    // if program can't find the file
+        while (!WindowShouldClose()) {  // repeat until the user closes the window or presses the `ESC` key
 
-        // 게임 화면의 가운데에 6PM 로고를 그린다.
-        DrawTextureV(texture, position, WHITE);
+            // initalizing frame buffer for drawing
+            BeginDrawing();
+            
+            // fill frame buffer to black
+            ClearBackground(BLACK);
+            
+            // draw dark black of rectangle on the screen 
+            DrawRectangleRec(bounds, BACKGROUND_COLOR);
+            
+            // draw text on the screen
+            DrawText(
+                "File not Found!\nPlease check your folder!",\
+                SCREEN_WIDTH * 0.1,\
+                SCREEN_HEIGHT * 0.4,\
+                40.0f, BLACK);
 
-        // 게임 화면에 현재 FPS를 표시한다.
-        DrawFPS(8, 8);
+            // draw screen using doulbe buffer method, ready to next frame buffer
+            EndDrawing();
+        }
+    } else {    // if program find the file
+        while (!WindowShouldClose()) { // repeat until the user closes the window or presses the `ESC` key
 
-        // 더블 버퍼링 기법을 사용하여 게임 화면을 그리고,
-        // 다음 프레임 버퍼를 준비한다.
-        EndDrawing();
+            // initalizing frame buffer for drawing
+            BeginDrawing();
+            
+            // fill frame buffer to black
+            ClearBackground(BLACK);
+
+            // draw dark black of rectangle on the screen 
+            DrawRectangleRec(bounds, BACKGROUND_COLOR);
+
+            // draw button on the screen
+            for(int i = 0; i < 7; i++) {
+                DrawRectangle(btnPos[i].x, btnPos[i].y, button.width, button.height, BUTTON_CORLOR);
+                DrawText( algorithm[i], btnPos[i].x + 10, btnPos[i].y + 15, 30.0f, WHITE);
+            }
+
+            // draw the texture at the specified position on the screen
+            DrawTextureV(   logo_6pm_256x256,    logo_6pm_position, WHITE);
+            DrawTextureV(logo_raylib_128x128, logo_raylib_position, WHITE);
+
+            // display fps at set poisition
+            DrawFPS(8, 8);
+
+            // draw screen using doulbe buffer method, ready to next frame buffer
+            EndDrawing();
+        }
     }
 
+
     // memory allocate disable
-    UnloadTexture(texture);
+    UnloadTexture(logo_6pm_256x256);
+    UnloadTexture(logo_raylib_128x128);
+    UnloadTexture(card_image);
     CloseWindow();
     free(p);
     fclose(fp);
+
     return 0;
 }
