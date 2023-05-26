@@ -7,7 +7,7 @@
  *          - once executed, wait until the next order is over
  *          - all processes have the same prioity
  * @version 0.1
- * @date    (first date: 2023-05-03, last date: 2023-05-24)
+ * @date    (first date: 2023-05-03, last date: 2023-05-26)
  * 
  * @copyright Copyright (c) 2023 Minsu Bak
  * 
@@ -127,23 +127,15 @@ Process* FCFS(Process *p, int n, int t) {
         }
     }
 
-    // gantt chart test 
-    /*
-    print_gantt(
-        gantt,\
-        time,\
-        n,\
-        "FCFS"
-    ); */
-
-    // print FCFS scheduling result
-    print_result(result, n, "FCFS", total_turnaround, total_waiting, total_response);
+    // gantt chart & result test
+    //print_gantt(gantt, time, n, "FCFS");
+    //print_result(result, n, "FCFS", total_turnaround, total_waiting, total_response);
 
     // memory allocate disable
     free(response);
     free(result);
-    return gantt;
     //free(gantt);
+    return gantt;
 }
 
 #endif

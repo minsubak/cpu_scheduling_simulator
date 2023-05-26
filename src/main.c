@@ -122,10 +122,6 @@ int main(void) {
     int quantum;
     fscanf(fp, "%d", &quantum);
 
-    gantt_ = FCFS(p, count, total);
-
-    print_gantt(gantt_, total, count, "FCFS");
-
     // default config settings
     InitWindow(SCREEN_W, SCREEN_H, "CPU Scheduling Simulator with raylib");
     SetTargetFPS(TARGET_FPS);
@@ -185,6 +181,9 @@ int main(void) {
                 if (CheckCollisionPointRec(mousePoint, btnPos[i])) {
                     if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
                         btnColorTag[i] = 1;
+                        for(int i = 0; i < 7; i++)
+                            btnClickFlag[i] = 0;
+                        btnClickFlag[i] = 1;
                     }
                     if(IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) btnColorTag[i] = 0;
                 }

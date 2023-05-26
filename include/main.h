@@ -35,8 +35,9 @@
 #define BTN_W               100                             // button size: width
 #define BTN_H               62                              // button size: height
 
-bool FILE_NOT_FOUND       = false;                          // file find flag
+bool FILE_NOT_FOUND = false;                                // file find flag
 int  btnColorTag[7];                                        // define color flag for each buttons
+int  btnClickFlag[7];                                       // define click flag for each buttons
 
 /**
  * @brief print error and exit
