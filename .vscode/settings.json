@@ -11,7 +11,8 @@
         "type_traits": "c",
         "*.m": "c",
         "npp.h": "c",
-        "hrn.h": "c"
+        "hrn.h": "c",
+        "sjf.h": "c"
     },
     "cmake.configureOnOpen": false
 }
