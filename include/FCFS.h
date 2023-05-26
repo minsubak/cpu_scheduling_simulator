@@ -50,7 +50,7 @@
  * @param n save process count
  * @param t save scheduler total burst time
  */
-void FCFS(Process *p, int n, int t) {
+Process* FCFS(Process *p, int n, int t) {
     
     // create variable, queue and etc
 
@@ -141,8 +141,9 @@ void FCFS(Process *p, int n, int t) {
 
     // memory allocate disable
     free(response);
-    free(gantt);
     free(result);
+    return gantt;
+    //free(gantt);
 }
 
 #endif

@@ -32,6 +32,8 @@
  *  
  */
 
+Process *gantt_;
+
 const Color colorTag[] = {                                      // button color flag
     {  30,  30,  30, 255}, //  dark gray
     { 150, 150, 150, 255}, // light gray
@@ -74,9 +76,9 @@ const Rectangle logo = {
     .x = 0, .y = 0, .width = 256, .height = 256
 };
 
-const char* name[] = {                                     // define script for  name
-    "FCFS", "SJF", "HRN", "NPP", "PP", "RR", "SRT",        // 0 ~  6: algorithm
-    " P\n(1)", " P\n(2)", " P\n(3)", " P\n(4)", " P\n(5)"  // 7 ~ 11: info
+const char* name[] = {                                          // define script for  name
+    "FCFS", "SJF", "HRN", "NPP", "PP", "RR", "SRT",       // 0 ~  6: algorithm
+    " P\n(1)", " P\n(2)", " P\n(3)", " P\n(4)", " P\n(5)" // 7 ~ 11: info
 };
 
 int main(void) {    
@@ -112,10 +114,17 @@ int main(void) {
         total += p[i].burst;
     }
 
+    // memory allocate to gantt array
+    gantt_ = malloc(sizeof(Process) * total);
+
     // get time quantum
 
     int quantum;
     fscanf(fp, "%d", &quantum);
+
+    gantt_ = FCFS(p, count, total);
+
+    print_gantt(gantt_, total, count, "FCFS");
 
     // default config settings
     InitWindow(SCREEN_W, SCREEN_H, "CPU Scheduling Simulator with raylib");
@@ -124,15 +133,15 @@ int main(void) {
     // loading and creating texture image from `res` folder
     // WARN: be sure to call `InitWindows()` before creating a texture image
 
-    Texture2D logo_6pm      = LoadTexture("res/images/6pm-logo_256x256.png");
-    Texture2D logo_raylib   = LoadTexture("res/images/raylib-logo_256x256.png");
-    Texture2D card_image    = LoadTexture("res/images/cards_70x10.png");
+    Texture2D logo_6pm    = LoadTexture("res/images/6pm-logo_256x256.png");
+    Texture2D logo_raylib = LoadTexture("res/images/raylib-logo_256x256.png");
+    Texture2D card_image  = LoadTexture("res/images/cards_70x10.png");
 
     // define position for drawing logo
 
     const Rectangle logo_position[] = { 
         {.x = 0.89f * (SCREEN_W - 128), .y = 1.01f * (SCREEN_H - 128), .width = 128, .height = 128},
-        {.x = 0.99f * (SCREEN_W - 96),  .y = 0.99f * (SCREEN_H - 96),  .width = 96,  .height = 96}
+        {.x = 0.99f * (SCREEN_W - 96) , .y = 0.99f * (SCREEN_H - 96) , .width = 96 , .height = 96 }
     };
     // define position for default mouse position
     
@@ -201,13 +210,13 @@ int main(void) {
                 //DrawTexturePro( card_image, card, gantt, (Vector2) { 0, 0 }, 0 ,RED );
 
                 // draw scheduler calculate result
+                
 
-
-                // draw the texture at the `position` on the screen
-                DrawText( "aided by",         logo_position[0].x * 1.025, logo_position[0].y * 0.98, 20.0f, BLACK);
-                DrawText( "powerd by",        logo_position[1].x,         logo_position[1].y * 0.95, 20.0f, BLACK);
-                DrawText( "Process by Color", info[1].x * 0.72,           info[1].y * 0.95,          20.0f, BLACK);
-                DrawTexturePro( logo_6pm, logo,    logo_position[0], (Vector2){ 0, 0 }, 0, WHITE );
+                // draw the texture and text at the `position` on the screen
+                DrawText( "aided by"        , logo_position[0].x * 1.025, logo_position[0].y * 0.98, 20.0f, BLACK);
+                DrawText( "powerd by"       , logo_position[1].x        , logo_position[1].y * 0.95, 20.0f, BLACK);
+                DrawText( "Process by Color", info[1].x * 0.72          , info[1].y * 0.95         , 20.0f, BLACK);
+                DrawTexturePro( logo_6pm, logo   , logo_position[0], (Vector2){ 0, 0 }, 0, WHITE );
                 DrawTexturePro( logo_raylib, logo, logo_position[1], (Vector2){ 0, 0 }, 0, WHITE );
                 for(int i = 0; i < count; i++) {
                     DrawTexturePro( card_image, card, info[i], (Vector2) { 0, 0 }, 0 , colorTag[i + 2] );
