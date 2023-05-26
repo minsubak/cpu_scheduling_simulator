@@ -131,8 +131,8 @@ int main(void) {
     // define position for drawing logo
 
     const Rectangle logo_position[] = { 
-        {.x = 0.84f * (SCREEN_W - 128), .y = 0.99f * (SCREEN_H - 128), .width = 128, .height = 128},
-        {.x = 0.99f * (SCREEN_W - 128), .y = 0.99f * (SCREEN_H - 128), .width = 128, .height = 128}
+        {.x = 0.89f * (SCREEN_W - 128), .y = 1.01f * (SCREEN_H - 128), .width = 128, .height = 128},
+        {.x = 0.99f * (SCREEN_W - 96),  .y = 0.99f * (SCREEN_H - 96),  .width = 96,  .height = 96}
     };
     // define position for default mouse position
     
@@ -204,10 +204,11 @@ int main(void) {
 
 
                 // draw the texture at the `position` on the screen
-                 
-                DrawTexturePro( logo_6pm, logo, logo_position[0], (Vector2){ 0, 0 }, 0, WHITE );
+                DrawText( "aided by",         logo_position[0].x * 1.025, logo_position[0].y * 0.98, 20.0f, BLACK);
+                DrawText( "powerd by",        logo_position[1].x,         logo_position[1].y * 0.95, 20.0f, BLACK);
+                DrawText( "Process by Color", info[1].x * 0.72,           info[1].y * 0.95,          20.0f, BLACK);
+                DrawTexturePro( logo_6pm, logo,    logo_position[0], (Vector2){ 0, 0 }, 0, WHITE );
                 DrawTexturePro( logo_raylib, logo, logo_position[1], (Vector2){ 0, 0 }, 0, WHITE );
-                DrawText( "Process by Color", info[1].x * 0.72, info[1].y * 0.95, 20.0f, BLACK);
                 for(int i = 0; i < count; i++) {
                     DrawTexturePro( card_image, card, info[i], (Vector2) { 0, 0 }, 0 , colorTag[i + 2] );
                     DrawText( name[i + 7], info[i].x + 2, info[i].y, 20.0f, BLACK );
