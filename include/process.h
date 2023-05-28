@@ -38,6 +38,7 @@
  *  Texture2D   texture     n       card image
  *  int         t           n       total busrt time
  *  int         n           n       total process count
+ *  char        algo        y       algorithm name string array
  * 
  */
 
@@ -73,8 +74,11 @@ typedef struct Process{
  * @param texture   card image
  * @param t         total busrt time
  * @param n         total process count
+ * @param algo      algorithm name string array
  */
-void draw_everything(Process *p, Process *g, Texture2D texture, int t, int n) {
+void draw_everything(Process *p, Process *g, Texture2D texture, int t, int n, char* algo) {
+
+    DrawText(algo, SCREEN_W * 0.2 + 3, 80, 40, GREEN);
 
     for(int i = 0; i < t; i++) {
         
@@ -82,28 +86,28 @@ void draw_everything(Process *p, Process *g, Texture2D texture, int t, int n) {
         DrawTexturePro(
         texture,\
         card_bound,\
-        (Rectangle) {SCREEN_W * 0.1 + 103 + (i * 12), 80, 10, 16},\
+        (Rectangle) {SCREEN_W * 0.1 + 103 + (i * 12), 140, 10, 16},\
         (Vector2) { 0, 0 },\
         0,\
         colorTag[g[i].processID + 2]);
 
         // draw text, x position, y position, font size, text color
-        DrawText(TextFormat("%d", g[i].processID), SCREEN_W * 0.1 + 103 + (i * 12), 80, 10, WHITE);
+        DrawText(TextFormat("%d", g[i].processID), SCREEN_W * 0.1 + 105 + (i * 12), 160, 10, WHITE);
     }
 
     // draw text, x position, y position, font size, text color
-    DrawText("index\t\t\t\tPID\t\t\t\tarrival\t\t\t\tburst\t\t\t\tprioity\t\t\t\twaitng\t\t\tturnaround\n", SCREEN_W * 0.2, SCREEN_H * 0.2, 20, GREEN);
+    DrawText("index\t\t\t\tPID\t\t\t\tarrival\t\t\t\tburst\t\t\t\tprioity\t\t\t\twaitng\t\t\tturnaround\n", SCREEN_W * 0.2, SCREEN_H * 0.3, 20, GREEN);
     
     for(int i = 0; i < n; i++) {
 
         // draw text, x position, y position, font size, text color
-        DrawText(TextFormat("%d", i),                            SCREEN_W * 0.2,       SCREEN_H * 0.2 + (i * 20) + 30, 20, GREEN);
-        DrawText(TextFormat("%d", p[i].processID),               SCREEN_W * 0.2 + 100, SCREEN_H * 0.2 + (i * 20) + 30, 20, GREEN);
-        DrawText(TextFormat("%d", p[i].arrival),                 SCREEN_W * 0.2 + 185, SCREEN_H * 0.2 + (i * 20) + 30, 20, GREEN);
-        DrawText(TextFormat("%d", p[i].burst),                   SCREEN_W * 0.2 + 302, SCREEN_H * 0.2 + (i * 20) + 30, 20, GREEN);
-        DrawText(TextFormat("%d", p[i].priority),                SCREEN_W * 0.2 + 408, SCREEN_H * 0.2 + (i * 20) + 30, 20, GREEN);
-        DrawText(TextFormat("%d", p[i].waiting),                 SCREEN_W * 0.2 + 522, SCREEN_H * 0.2 + (i * 20) + 30, 20, GREEN);
-        DrawText(TextFormat("%d",(p[i].execute + p[i].waiting)), SCREEN_W * 0.2 + 620, SCREEN_H * 0.2 + (i * 20) + 30, 20, GREEN);
+        DrawText(TextFormat("%d", i),                            SCREEN_W * 0.2 + 1  , SCREEN_H * 0.3 + (i * 20) + 30, 20, GREEN);
+        DrawText(TextFormat("%d", p[i].processID),               SCREEN_W * 0.2 + 100, SCREEN_H * 0.3 + (i * 20) + 30, 20, GREEN);
+        DrawText(TextFormat("%d", p[i].arrival),                 SCREEN_W * 0.2 + 185, SCREEN_H * 0.3 + (i * 20) + 30, 20, GREEN);
+        DrawText(TextFormat("%d", p[i].burst),                   SCREEN_W * 0.2 + 302, SCREEN_H * 0.3 + (i * 20) + 30, 20, GREEN);
+        DrawText(TextFormat("%d", p[i].priority),                SCREEN_W * 0.2 + 408, SCREEN_H * 0.3 + (i * 20) + 30, 20, GREEN);
+        DrawText(TextFormat("%d", p[i].waiting),                 SCREEN_W * 0.2 + 522, SCREEN_H * 0.3 + (i * 20) + 30, 20, GREEN);
+        DrawText(TextFormat("%d",(p[i].execute + p[i].waiting)), SCREEN_W * 0.2 + 620, SCREEN_H * 0.3 + (i * 20) + 30, 20, GREEN);
     }
 }
 

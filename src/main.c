@@ -2,7 +2,7 @@
  * @file    main.c
  * @author  Mindou (minsu5875@naver.com)
  * @brief   Operating System-Term Project: CPU_Scheduler Simulator
- * @version beta 0.1
+ * @version beta 0.1.1
  * @date    (first date: 2023-04-26, last date: 2023-05-28)
  * 
  * @copyright Copyright (c) 2023 Minsu Bak

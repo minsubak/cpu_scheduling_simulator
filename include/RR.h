@@ -148,7 +148,7 @@ void RR(Process *p, int n, int t, int q, Texture2D card) {
     }
 
     // draw gantt chart and result table to screen
-    draw_everything(result, gantt, card, t, n);
+    draw_everything(result, gantt, card, t, n, name[5]);
     
     // memory allocate disable
     free(response);

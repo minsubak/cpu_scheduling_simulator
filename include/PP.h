@@ -149,7 +149,7 @@ void PP(Process *p, int n, int t, Texture2D card) {
     }
 
     // draw gannt chart and result table to screen
-    draw_everything(result, gantt, card, t, n);
+    draw_everything(result, gantt, card, t, n, name[4]);
 
     // memory allocate disable
     free(response);

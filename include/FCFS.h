@@ -131,7 +131,7 @@ void FCFS(Process *p, int n, int t, Texture2D card) {
     }
 
     // draw gantt chart and result table to screen
-    draw_everything(result, gantt, card, t, n);
+    draw_everything(result, gantt, card, t, n, name[0]);
     
     // memory allocate disable
     free(response);
