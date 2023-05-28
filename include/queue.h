@@ -1,13 +1,9 @@
 /**
  * @file    queue.h
  * @author  Mindou (minsu5875@naver.com)
- * @brief   queue structure
- *  
- *          [summary]
- *          basic queue structure / edit for CPU scheduler simulator
- * 
+ * @brief   basic queue structure / edit for CPU scheduler simulator
  * @version 0.1
- * @date    last update: 2023-05-09
+ * @date    (last update: 2023-05-09)
  * 
  * @copyright Copyright (c) 2022 Minsu Bak
  * 

@@ -2,12 +2,12 @@
  * @file    PP.h
  * @author  Mindou (minsu5875@naver.com)
  * @brief   = CPU schedule simulator
- *          = preemeption method - PP(Preemption Prioity)
- *          - 
- *          - 
+ *          = preemeption method - PP(Preemption Priority)
+ *          - priority-based algorithm
+ *          - change if other tasks have high priority during operation
  *          -
  * @version 0.1
- * @date    (first date: 2023-05-11, last date: 2023-05-24)
+ * @date    (first date: 2023-05-11, last date: 2023-05-28)
  * 
  * @copyright Copyright (c) 2023 Minsu Bak
  * 
@@ -17,9 +17,11 @@
 #define PP_H
 
 // external library & user define library
+#include "main.h"
 #include "queue.h"
 #include "process.h"
 #include "compare.h"
+#include "raylib.h"
 
 /**
  * @brief PP.h variable info
@@ -44,13 +46,13 @@
  */
 
 /**
- * @brief   Preemption Prioity
+ * @brief   Preemption Priority
  * 
  * @param p pointer for process struture
  * @param n save process count
  * @param t save scheduler total burst time
  */
-void PP(Process *p, int n, int t) {
+void PP(Process *p, int n, int t, Texture2D card) {
     
     // create variable, queue and etc
 
@@ -89,8 +91,8 @@ void PP(Process *p, int n, int t) {
             if(peek(&pre).arrival == time) {
                 enqueue(&ready, *dequeue(&pre));
                 if(CHECK) // debug
-                    printf("arrival:\tt: %2d, p: %2d\n", time, ready.queue->processID);
-                sort(&ready, compare_for_prioity);
+                    TraceLog(LOG_INFO, "arrival:\tt: %2d, p: %2d\n", time, ready.queue->processID);
+                sort(&ready, compare_for_priority);
             }
         }
 
@@ -101,14 +103,14 @@ void PP(Process *p, int n, int t) {
             total_waiting += temp->waiting;
             temp->execute  = 0;
             if(CHECK) // debug
-                printf("dispatch:\tt: %2d, p: %2d, w: %2d\n", time, temp->processID, temp->waiting);
+                TraceLog(LOG_INFO, "dispatch:\tt: %2d, p: %2d, w: %2d\n", time, temp->processID, temp->waiting);
         }
 
-        // timeout & dispatch new PCB: if the present task prioity is lower than next task
+        // timeout & dispatch new PCB: if the present task priority is lower than next task
         if(!is_empty_q(&ready)) {
-            if(peek(&ready).prioity < temp->prioity) {
+            if(peek(&ready).priority < temp->priority) {
                 if(CHECK)
-                    printf("timeout:\tt: %2d, p: %2d\n", time, temp->processID);
+                    TraceLog(LOG_INFO, "timeout:\tt: %2d, p: %2d\n", time, temp->processID);
                 temp->timeout          = time;
                 total_turnaround      += temp->execute + temp->waiting;
                 enqueue(&ready, *temp);
@@ -117,8 +119,8 @@ void PP(Process *p, int n, int t) {
                 total_waiting         += temp->waiting;
                 temp->execute          = 0;
                 if(CHECK) // debug
-                    printf("dispatch:\tt: %2d, p: %2d, w: %2d\n", time, temp->processID, temp->waiting);
-                sort(&ready, compare_for_prioity);
+                    TraceLog(LOG_INFO, "dispatch:\tt: %2d, p: %2d, w: %2d\n", time, temp->processID, temp->waiting);
+                sort(&ready, compare_for_priority);
             }            
         }
 
@@ -138,7 +140,7 @@ void PP(Process *p, int n, int t) {
             // terminate present PCB
             if(temp->remain == 0) {
                 if(CHECK)
-                    printf("terminate:\tt: %2d, p: %2d\n", time, temp->processID);
+                    TraceLog(LOG_INFO, "terminate:\tt: %2d, p: %2d\n", time, temp->processID);
                 total_turnaround   += temp->execute + temp->waiting;
                 result[terminate++] = *temp;
                 temp = NULL;
@@ -146,16 +148,13 @@ void PP(Process *p, int n, int t) {
         }
     }
 
-    // gantt chart test
-    //print_gantt(gantt, time, n, "PP");
-        
-    // print PP scheduling result
-    print_result(result, n, "PP", total_turnaround, total_waiting, total_response);
+    // draw gannt chart and result table to screen
+    draw_everything(result, gantt, card, t, n);
 
     // memory allocate disable
     free(response);
-    free(gantt);
     free(result);
+    free(gantt);
 }
 
 #endif

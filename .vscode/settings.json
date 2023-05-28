@@ -6,7 +6,15 @@
         "stdlib.h": "c",
         "stdio.h": "c",
         "compare.h": "c",
-        "queue.h": "c"
+        "queue.h": "c",
+        "main.h": "c",
+        "type_traits": "c",
+        "*.m": "c",
+        "npp.h": "c",
+        "hrn.h": "c",
+        "sjf.h": "c",
+        "raylib.h": "c",
+        "stdbool.h": "c"
     },
     "cmake.configureOnOpen": false
 }

@@ -2,12 +2,12 @@
  * @file    NPP.h
  * @author  Mindou (minsu5875@naver.com)
  * @brief   = CPU schedule simulator
- *          = non preemeption method - NPP(Non-Preemption Prioity)
- *          - assign to CPU in order of prioity in the ready queue
- *          -
+ *          = non preemeption method - NPP(Non-Preemption Priority)
+ *          - assign to CPU in order of priority in the ready queue
+ *          - run first-time task regardless of priority
  *          -
  * @version 0.1
- * @date    (first date: 2023-05-10, last date: 2023-05-24)
+ * @date    (first date: 2023-05-10, last date: 2023-05-28)
  * 
  * @copyright Copyright (c) 2023 Minsu Bak
  * 
@@ -17,9 +17,11 @@
 #define NPP_H
 
 // external library & user define library
+#include "main.h"
 #include "queue.h"
 #include "process.h"
 #include "compare.h"
+#include "raylib.h"
 
 /**
  * @brief NPP.h variable info
@@ -44,13 +46,14 @@
  */
 
 /**
- * @brief   Non-Preemption Prioity
+ * @brief   Non-Preemption Priority
  * 
- * @param p pointer for process struture
- * @param n save process count
- * @param t save scheduler total burst time
+ * @param p     pointer for process struture
+ * @param n     save process count
+ * @param t     save scheduler total burst time
+ * @param card  card image
  */
-void NPP(Process *p, int n, int t) {
+void NPP(Process *p, int n, int t, Texture2D card) {
     
     // create variable, queue and etc
 
@@ -89,8 +92,8 @@ void NPP(Process *p, int n, int t) {
             if(peek(&pre).arrival == time) {
                 enqueue(&ready, *dequeue(&pre));
                 if(CHECK) // debug
-                    printf("arrival:\tt: %2d, p: %2d\n", time, ready.queue->processID);
-                sort(&ready, compare_for_prioity);
+                    TraceLog(LOG_INFO, "arrival:\tt: %2d, p: %2d\n", time, ready.queue->processID);
+                sort(&ready, compare_for_priority);
             }
         }
         
@@ -101,7 +104,7 @@ void NPP(Process *p, int n, int t) {
             total_waiting += temp->waiting;
             temp->execute  = 0;
             if(CHECK) // debug
-                printf("dispatch:\tt: %2d, p: %2d, w: %2d\n", time, temp->processID, temp->waiting);
+                TraceLog(LOG_INFO, "dispatch:\tt: %2d, p: %2d, w: %2d\n", time, temp->processID, temp->waiting);
         }
         
         // check the response time of the process 
@@ -120,24 +123,21 @@ void NPP(Process *p, int n, int t) {
             // terminate present PCB
             if(temp->remain == 0) {
                 if(CHECK) // debug
-                    printf("terminate:\tt: %2d, p: %2d\n", time, temp->processID);
+                    TraceLog(LOG_INFO, "terminate:\tt: %2d, p: %2d\n", time, temp->processID);
                 total_turnaround   += temp->execute + temp->waiting;
                 result[terminate++] = *temp;
                 temp = NULL;
             }
         }
     }
-
-    // gantt chart test
-    //print_gantt(gantt, time, n, "NPP");
-    
-    // print NPP scheduling result
-    print_result(result, n, "NPP", total_turnaround, total_waiting, total_response);
-
+  
+    // draw gantt chart and result table to screen
+    draw_everything(result, gantt, card, t, n);
+  
     // memory allocate disable
     free(response);
-    free(gantt);
     free(result);
+    free(gantt);
 }
 
 #endif

@@ -3,11 +3,11 @@
  * @author  Mindou (minsu5875@naver.com)
  * @brief   = CPU schedule simulator
  *          = preemption method - RR(Round-Robin)
- *          - 
+ *          - run by time quantum variable and move to next action
  *          -
  *          -
  * @version 0.1
- * @date    (first date: 2023-05-15, last date: 2023-05-24)
+ * @date    (first date: 2023-05-15, last date: 2023-05-28)
  * 
  * @copyright Copyright (c) 2023 Minsu Bak
  * 
@@ -17,9 +17,11 @@
 #define RR_H
 
 // external library & user define library
+#include "main.h"
 #include "queue.h"
 #include "process.h"
 #include "compare.h"
+#include "raylib.h"
 
 /**
  * @brief RR.h variable info
@@ -47,12 +49,13 @@
 /**
  * @brief   Round-Robin
  * 
- * @param p pointer for process structure
- * @param n save process count
- * @param t save scheduler total burst time
- * @param q save scheduler time quantum
+ * @param p     pointer for process structure
+ * @param n     save process count
+ * @param t     save scheduler total burst time
+ * @param q     save scheduler time quantum
+ * @param card  card image
  */
-void RR(Process *p, int n, int t, int q) {
+void RR(Process *p, int n, int t, int q, Texture2D card) {
     
     // create variable, queue and etc
 
@@ -91,7 +94,7 @@ void RR(Process *p, int n, int t, int q) {
             if(peek(&pre).arrival == time) {
                 enqueue(&ready, *dequeue(&pre));
                 if(CHECK) // debug
-                    printf("arrival:\tt: %2d, p: %2d\n", time, ready.queue->processID);
+                    TraceLog(LOG_INFO, "arrival:\tt: %2d, p: %2d\n", time, ready.queue->processID);
             }
         }
 
@@ -102,13 +105,13 @@ void RR(Process *p, int n, int t, int q) {
             total_waiting += temp->waiting;
             temp->execute  = 0;
             if(CHECK) // debug
-                printf("dispatch:\tt: %2d, p: %2d, w: %2d\n", time, temp->processID, temp->waiting);
+                TraceLog(LOG_INFO, "dispatch:\tt: %2d, p: %2d, w: %2d\n", time, temp->processID, temp->waiting);
         }
 
         // 
         if(temp->execute == q) {
             if(CHECK) // debug
-                printf("timeout:\tt: %2d, p: %2d, w: %2d\n", time, temp->processID, temp->waiting);
+                TraceLog(LOG_INFO, "timeout:\tt: %2d, p: %2d, w: %2d\n", time, temp->processID, temp->waiting);
             temp->timeout          = time;
             total_turnaround      += temp->execute + temp->waiting;
             enqueue(&ready, *temp);
@@ -117,7 +120,7 @@ void RR(Process *p, int n, int t, int q) {
             total_waiting         += temp->waiting;
             temp->execute          = 0;
             if(CHECK) // debug
-                printf("dispatch:\tt: %2d, p: %2d, w: %2d\n", time, temp->processID, temp->waiting);
+                TraceLog(LOG_INFO, "dispatch:\tt: %2d, p: %2d, w: %2d\n", time, temp->processID, temp->waiting);
         }
         
         // check the response time of the process 
@@ -136,7 +139,7 @@ void RR(Process *p, int n, int t, int q) {
             // terminate present PCB
             if(temp->remain == 0) {
                 if(CHECK) // debug
-                    printf("terminate:\tt: %2d, p: %2d\n", time, temp->processID);
+                    TraceLog(LOG_INFO, "terminate:\tt: %2d, p: %2d\n", time, temp->processID);
                 total_turnaround   += temp->execute + temp->waiting;
                 result[terminate++] = *temp;
                 temp = NULL;
@@ -144,16 +147,13 @@ void RR(Process *p, int n, int t, int q) {
         }
     }
 
-    // gantt chart test
-    //print_gantt(gantt, time, n, "RR");
-            
-    // print RR scheduling result
-    print_result(result, n, "RR", total_turnaround, total_waiting, total_response);
-
+    // draw gantt chart and result table to screen
+    draw_everything(result, gantt, card, t, n);
+    
     // memory allocate disable
     free(response);
-    free(gantt);
     free(result);
+    free(gantt);
 }
 
 #endif
