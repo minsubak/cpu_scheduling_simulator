@@ -12,7 +12,9 @@
         "*.m": "c",
         "npp.h": "c",
         "hrn.h": "c",
-        "sjf.h": "c"
+        "sjf.h": "c",
+        "raylib.h": "c",
+        "stdbool.h": "c"
     },
     "cmake.configureOnOpen": false
 }

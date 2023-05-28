@@ -2,8 +2,8 @@
  * @file    main.c
  * @author  Mindou (minsu5875@naver.com)
  * @brief   Operating System-Term Project: CPU_Scheduler Simulator
- * @version 0.1
- * @date    (first date: 2023-04-26, last date: 2023-05-)
+ * @version beta 0.1
+ * @date    (first date: 2023-04-26, last date: 2023-05-28)
  * 
  * @copyright Copyright (c) 2023 Minsu Bak
  * 
@@ -14,78 +14,41 @@
 #include <stdlib.h>
 
 // external library & user define library
+#include "FCFS.h"
+#include "SJF.h"
+#include "HRN.h"
+#include "NPP.h"
+#include "PP.h"
+#include "RR.h"
+#include "SRT.h"
 #include "main.h"
 #include "process.h"
 #include "raylib.h"
-#include "main.h"
 
 /**
  * @brief main.c variable info
  *  
  *  type        name        pointer     info
- *  FILE        fp          y           file pointer for file I/O and management
- *  Process     p           y           structure for process data storage
- *  int         i           n           multipurpose utilization variable
- *  int         count       n           save process count
- *  int         quantum     n           save simulator environment variable basic value
- *  int         total       n           save scheduler total burst time
- *  
+ *  Process     gantt       y           pointer to get gantt chart from function
+ *  FILE        fp          y           pointer for file I/O
+ *  int         count       n           int variable for process count
+ *  Process     p           y           pointer for process structure
+ *  int         total       n           int variable for total burst time of tasks
+ *  int         quantum     n           int variable for time quantum
+ *  Texture2D   logo_6pm    n           6pm logo image
+ *  Texture2D   logo_raylib n           laylib logo image
+ *  Texture2D   card_image  n           card image
+ *  Vector2     mousePoint  n           return mouse position (default .x = 0.0f, .y = 0.0f)
+ * 
  */
 
-Process *gantt_;
-
-const Color colorTag[] = {                                      // button color flag
-    {  30,  30,  30, 255}, //  dark gray
-    { 150, 150, 150, 255}, // light gray
-    { 230,  41,  55, 255}, // red
-    { 255, 151,   0, 255}, // orange
-    { 253, 249,   0, 255}, // yellow
-    {   0, 228,  48, 255}, // green
-    {   0, 121, 241, 255}, // blue
-};
-
-const Rectangle btnSize = { .width = BTN_W, .height = BTN_H };  // button size
-
-const Rectangle btnPos[] = {                                    // define button display position
-    { .x = 30, .y =                  40, .width = BTN_W, .height = BTN_H },
-    { .x = 30, .y = SCREEN_H * 0.1 + 40, .width = BTN_W, .height = BTN_H },
-    { .x = 30, .y = SCREEN_H * 0.2 + 40, .width = BTN_W, .height = BTN_H },
-    { .x = 30, .y = SCREEN_H * 0.3 + 40, .width = BTN_W, .height = BTN_H },
-    { .x = 30, .y = SCREEN_H * 0.4 + 40, .width = BTN_W, .height = BTN_H },
-    { .x = 30, .y = SCREEN_H * 0.5 + 40, .width = BTN_W, .height = BTN_H },
-    { .x = 30, .y = SCREEN_H * 0.6 + 40, .width = BTN_W, .height = BTN_H }
-};
-
-const Rectangle card = {
-    .x = 60, .y = 0, .width = 10, .y = 16
-};
-
-const Rectangle gantt = {
-    .x = SCREEN_W * 0.5, .y = SCREEN_H * 0.5, .width = 10 * 3, .height = 16 * 3
-};
-
-const Rectangle info[] = {
-    {.x =                   35, .y = SCREEN_H * 0.9, .width = 10 * 3, .height = 16 * 3},
-    {.x = SCREEN_W * 0.05 + 35, .y = SCREEN_H * 0.9, .width = 10 * 3, .height = 16 * 3},
-    {.x = SCREEN_W * 0.1  + 35, .y = SCREEN_H * 0.9, .width = 10 * 3, .height = 16 * 3},
-    {.x = SCREEN_W * 0.15 + 35, .y = SCREEN_H * 0.9, .width = 10 * 3, .height = 16 * 3},
-    {.x = SCREEN_W * 0.2  + 35, .y = SCREEN_H * 0.9, .width = 10 * 3, .height = 16 * 3}
-};
-
-const Rectangle logo = {
-    .x = 0, .y = 0, .width = 256, .height = 256
-};
-
-const char* name[] = {                                          // define script for  name
-    "FCFS", "SJF", "HRN", "NPP", "PP", "RR", "SRT",       // 0 ~  6: algorithm
-    " P\n(1)", " P\n(2)", " P\n(3)", " P\n(4)", " P\n(5)" // 7 ~ 11: info
-};
+Process *gantt; // pointer to get gantt chart from function
 
 int main(void) {    
 
     // search and load `data.txt` files with process data
 
-    FILE *fp = fopen("data.txt", "r");
+    FILE *fp = fopen("res/txt/data.txt", "r");
     if(fp == NULL) {
         TraceLog(LOG_WARNING, "file not found!");
         FILE_NOT_FOUND = true;
@@ -105,7 +68,7 @@ int main(void) {
         &p[i].processID,\
         &p[i].arrival,\
         &p[i].burst,\
-        &p[i].prioity
+        &p[i].priority
         );
         p[i].remain = p[i].burst;
         p[i].timeout = p[i].arrival;
@@ -115,7 +78,7 @@ int main(void) {
     }
 
     // memory allocate to gantt array
-    gantt_ = malloc(sizeof(Process) * total);
+    gantt = malloc(sizeof(Process) * total);
 
     // get time quantum
 
@@ -133,12 +96,6 @@ int main(void) {
     Texture2D logo_raylib = LoadTexture("res/images/raylib-logo_256x256.png");
     Texture2D card_image  = LoadTexture("res/images/cards_70x10.png");
 
-    // define position for drawing logo
-
-    const Rectangle logo_position[] = { 
-        {.x = 0.89f * (SCREEN_W - 128), .y = 1.01f * (SCREEN_H - 128), .width = 128, .height = 128},
-        {.x = 0.99f * (SCREEN_W - 96) , .y = 0.99f * (SCREEN_H - 96) , .width = 96 , .height = 96 }
-    };
     // define position for default mouse position
     
     Vector2 mousePoint = { .x = 0.0f, .y = 0.0f };
@@ -160,7 +117,8 @@ int main(void) {
                     "File not Found!\nPlease check your folder and restart!",\
                     SCREEN_W * 0.1,\
                     SCREEN_H * 0.4,\
-                    40.0f, BLACK);
+                    40.0f, BLACK
+                );
 
             // draw screen using doulbe buffer method, ready to next frame buffer
             EndDrawing();
@@ -178,49 +136,110 @@ int main(void) {
 
             // check mouse state
             for (int i = 0; i < 7; i++) {
-                if (CheckCollisionPointRec(mousePoint, btnPos[i])) {
+
+                // if the mouse point position approaches the button position
+                if (CheckCollisionPointRec(mousePoint, (Rectangle){30, 768 * (0.1 * i) + 40, BTN_W, BTN_H})) {
+
+                    // if mouse left button is pressed
                     if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-                        btnColorTag[i] = 1;
+                        
+                        // initalize button click flags
                         for(int i = 0; i < 7; i++)
                             btnClickFlag[i] = 0;
-                        btnClickFlag[i] = 1;
+
+                        // change the flag corresponding to the clicked button
+                        btnClickFlag[i] = 1;      
                     }
-                    if(IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) btnColorTag[i] = 0;
                 }
-                else btnColorTag[i] = 0;
             }
 
             // initalizing frame buffer for drawing
             BeginDrawing();
             
                 // fill frame buffer to black
-                ClearBackground(WHITE);
-
+                ClearBackground((Color){ 0, 0, 0, 255});
                 // draw button on the screen
                 for(int i = 0; i < 7; i++) {
-                    DrawRectangleRec( btnPos[i], colorTag[btnColorTag[i]] );
-                    DrawText( name[i], btnPos[i].x + 10, btnPos[i].y + 15, 30.0f, WHITE );
+                    DrawRectangleRec(
+                        (Rectangle){30, 768 * (0.1 * i) + 40, BTN_W, BTN_H},
+                        colorTag[btnClickFlag[i]]
+                    );
+                    DrawText(
+                        name[i], 
+                        40, 
+                        768 * (0.1 * i) + 55, 
+                        30.0f, 
+                        (Color){ 238, 58, 23, 255}
+                    );
                 }
 
                 // draw gantt chart
-/*                 for(int i = 0; i < total; i++) {
-                    DrawTexturePro(  );
-                } */
-                //DrawTexturePro( card_image, card, gantt, (Vector2) { 0, 0 }, 0 ,RED );
+                for(int i = 0; i < 7; i++) {
 
-                // draw scheduler calculate result
-                
+                    // if the flag corresponding to the `i` variable is 1
+                    if(btnClickFlag[i] == 1) {
 
-                // draw the texture and text at the `position` on the screen
-                DrawText( "aided by"        , logo_position[0].x * 1.025, logo_position[0].y * 0.98, 20.0f, BLACK);
-                DrawText( "powerd by"       , logo_position[1].x        , logo_position[1].y * 0.95, 20.0f, BLACK);
-                DrawText( "Process by Color", info[1].x * 0.72          , info[1].y * 0.95         , 20.0f, BLACK);
-                DrawTexturePro( logo_6pm, logo   , logo_position[0], (Vector2){ 0, 0 }, 0, WHITE );
-                DrawTexturePro( logo_raylib, logo, logo_position[1], (Vector2){ 0, 0 }, 0, WHITE );
-                for(int i = 0; i < count; i++) {
-                    DrawTexturePro( card_image, card, info[i], (Vector2) { 0, 0 }, 0 , colorTag[i + 2] );
-                    DrawText( name[i + 7], info[i].x + 2, info[i].y, 20.0f, BLACK );
+                        // enforce algorithms that fit `i` variable
+                        switch(i) {
+                        case 0:
+                            // First Come First Served
+                            FCFS(p, count, total, card_image);
+                            break;
+                            
+                        case 1:
+                            // Shortest Job First
+                            SJF(p, count, total, card_image);
+                            break;
+                            
+                        case 2:
+                            // Highest Responese Ratio Next
+                            HRN(p, count, total, card_image);
+                            break;
+                            
+                        case 3:
+                            // Non-Preemption Prioity
+                            NPP(p, count, total, card_image);
+                            break;
+                            
+                        case 4:
+                            // Preemption Prioity
+                            PP(p, count, total, card_image);
+                            break;
+                            
+                        case 5:
+                            // Round-Robin
+                            RR(p, count, total, quantum, card_image);
+                            break;
+                            
+                        case 6:
+                            // Shortest Remaining Time
+                            SRT(p, count, total, card_image);
+                            break;
+                            
+                        default:
+                            // if system can't get `i` answer
+                            TraceLog(LOG_WARNING, "unknown variable `i`");
+                            break;
+                        }
+                    }
                 }
+
+                DrawTexturePro(
+                    logo_6pm,    
+                    (Rectangle){.x = 0, .y = 0, .width = 256, .height = 256}, 
+                    logo_position[0], 
+                    (Vector2){ 0, 0 }, 
+                    0, 
+                    WHITE
+                );
+                DrawTexturePro(
+                    logo_raylib, 
+                    (Rectangle){.x = 0, .y = 0, .width = 256, .height = 256}, 
+                    logo_position[1], 
+                    (Vector2){ 0, 0 }, 
+                    0, 
+                    WHITE
+                );
 
                 // display fps at set poisition
                 DrawFPS(8, 8);
@@ -240,25 +259,3 @@ int main(void) {
 
     return 0;
 }
-
-/* 
-    // First Come First Served
-    FCFS(p, count, total);
-
-    // Shortest Job First
-    SJF(p, count, total);
-
-    // Highest Responese Ratio Next
-    HRN(p, count, total);
-
-    // Non-Preemption Prioity
-    NPP(p, count, total);
-    
-    // Preemption Prioity
-    PP(p, count, total);
-
-    // Round-Robin
-    RR(p, count, total, quantum);
-
-    // Shortest Remaining Time
-    SRT(p, count, total); */

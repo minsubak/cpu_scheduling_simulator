@@ -70,7 +70,7 @@ endif
 
 CC := gcc
 CFLAGS := -D_DEFAULT_SOURCE -g $(INCLUDE_PATH:%=-I%) -O2 -std=gnu99
-LDFLAGS := $(LIBRARY_PATH:%=-L%)
+LDFLAGS := $(LIBRARY_PATH:%=-L%) --static #-Wl,--subsystem,windows #  <-- if you want disalbe console screen insert it!
 LDLIBS := -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
 
 PLATFORM := $(HOST_PLATFORM)

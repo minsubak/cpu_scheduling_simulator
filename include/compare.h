@@ -1,9 +1,9 @@
 /**
  * @file    compare.h
  * @author  Mindou (minsu5875@naver.com)
- * @brief   user define library for compare function for qsort()
+ * @brief   compare function package for qsort()
  * @version 0.1
- * @date    (first date: 2023-05-15, last date: 2023-05-24)
+ * @date    (first date: 2023-05-15, last date: 2023-05-28)
  * 
  * @copyright Copyright (c) 2023 Minsu Bak
  * 
@@ -62,13 +62,13 @@ int compare_for_burst(const void* a, const void* b) {
 }
 
 /**
- * @brief   compare prioity function with qsort
+ * @brief   compare priority function with qsort
  * 
  * @param a compare target a
  * @param b compare target b
  * @return  int 
  */
-int compare_for_prioity(const void* a, const void* b) {
+int compare_for_priority(const void* a, const void* b) {
     
     // compare target match progress
 
@@ -76,9 +76,9 @@ int compare_for_prioity(const void* a, const void* b) {
     Process* B = (Process*) b;
 
     // if compare target A and B was same
-    if(A->prioity == B->prioity)
+    if(A->priority == B->priority)
         return (A->arrival>B->arrival)-(A->arrival<B->arrival);
-    return (A->prioity>B->prioity)-(A->prioity<B->prioity);
+    return (A->priority>B->priority)-(A->priority<B->priority);
 }
 
 /**
@@ -99,8 +99,8 @@ int compare_for_remain(const void* a, const void* b) {
 }
 
 /**
- * @brief   compare prioity, but using special formula function with qsort
- *          prioity = (waiting + burst) / burst
+ * @brief   compare priority, but using special formula function with qsort
+ *          priority = (waiting + burst) / burst
  * 
  * @param a compare target a
  * @param b compare target b

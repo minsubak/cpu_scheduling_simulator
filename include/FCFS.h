@@ -5,9 +5,9 @@
  *          = non preemeption method - FCFS(first come first served)
  *          - assign to CPU in order of arrival in the ready queue
  *          - once executed, wait until the next order is over
- *          - all processes have the same prioity
+ *          - all processes have the same priority
  * @version 0.1
- * @date    (first date: 2023-05-03, last date: 2023-05-26)
+ * @date    (first date: 2023-05-03, last date: 2023-05-28)
  * 
  * @copyright Copyright (c) 2023 Minsu Bak
  * 
@@ -17,9 +17,11 @@
 #define FCFS_H
 
 // external library & user define library
+#include "main.h"
 #include "queue.h"
 #include "process.h"
 #include "compare.h"
+#include "raylib.h"
 
 /**
  * @brief FCFS.h variable info
@@ -46,11 +48,12 @@
 /**
  * @brief   First Come First Served
  * 
- * @param p pointer for process structure
- * @param n save process count
- * @param t save scheduler total burst time
+ * @param p     pointer for process structure
+ * @param n     save process count
+ * @param t     save scheduler total burst time
+ * @param card  card image
  */
-Process* FCFS(Process *p, int n, int t) {
+void FCFS(Process *p, int n, int t, Texture2D card) {
     
     // create variable, queue and etc
 
@@ -89,7 +92,7 @@ Process* FCFS(Process *p, int n, int t) {
             if(peek(&pre).arrival == time) {
                 enqueue(&ready, *dequeue(&pre));
                 if(CHECK) // debug
-                    printf("arrival:\tt: %2d, p: %2d\n", time, ready.queue->processID);
+                    TraceLog(LOG_INFO, "arrival:\tt: %2d, p: %2d\n", time, ready.queue->processID);
             }
         }
 
@@ -100,7 +103,7 @@ Process* FCFS(Process *p, int n, int t) {
             total_waiting += temp->waiting;
             temp->execute  = 0;
             if(CHECK) // debug
-                printf("dispatch:\tt: %2d, p: %2d, w: %2d\n", time, temp->processID, temp->waiting);
+                TraceLog(LOG_INFO, "dispatch:\tt: %2d, p: %2d, w: %2d\n", time, temp->processID, temp->waiting);
         }
 
         // check the response time of the process 
@@ -119,7 +122,7 @@ Process* FCFS(Process *p, int n, int t) {
             // terminate present PCB
             if(temp->remain == 0) {
                 if(CHECK) // debug
-                    printf("terminate:\tt: %2d, p: %2d\n", time, temp->processID);
+                    TraceLog(LOG_INFO, "terminate:\tt: %2d, p: %2d\n", time, temp->processID);
                 total_turnaround   += temp->execute + temp->waiting;
                 result[terminate++] = *temp;
                 temp                = NULL;
@@ -127,15 +130,13 @@ Process* FCFS(Process *p, int n, int t) {
         }
     }
 
-    // gantt chart & result test
-    //print_gantt(gantt, time, n, "FCFS");
-    //print_result(result, n, "FCFS", total_turnaround, total_waiting, total_response);
-
+    // draw gantt chart and result table to screen
+    draw_everything(result, gantt, card, t, n);
+    
     // memory allocate disable
     free(response);
     free(result);
-    //free(gantt);
-    return gantt;
+    free(gantt);
 }
 
 #endif
