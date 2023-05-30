@@ -15,3 +15,7 @@
 **/build/
 **/**/Debug/
 **/**/Release/
+
+# 실행 파일
+*.exe
+**/bin/*.exe
