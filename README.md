@@ -1,31 +1,64 @@
-# CPU scheduler simulator for Operating System (SCH Univ.)
- * update: 15/05/2023
- 
- - 사용한 스케줄링 기법:   
-   FCFS, SJF, Non-Preemption Priority, Preemption Priority, RR, SRT, HRN
+# CPU scheduling simulator (with raylib)
+ Update: 31/05/2023   
+ If you want TUI [version](https://github.com/minsubak/cpu_scheduling_simulator/tree/tui) <== here   
+ ## INDEX   
+   [How to Download](#how-to-download)   
+   [Algorithm list](#algorithm-list)   
+   [Anything else](#anything-else)   
+   [Contributor or Referencer](#contributor-or-referencer)
 
- - 입력(순서 고정):    
-   프로세스 인덱스, 프로세스ID, 도착시간, 서비스시간, 우선순위, 시간할당량
+ ## How to Download
+   - click the download button at the top of the page or run this command on a terminal that supports git
+   ```
+   git clone github.com/minsubak/cpu_scheduling_simulator.git
+   ```
+   
+ ## Algorithm List
 
- - 출력(순서 고정):    
-   간트 차트, 각 프로세스 별 대기시간, 평균 대기 시간, 각 프로세스 별 응답시간, 
-   평균 응답 시간, 각 프로세스 별 반환 시간, 평균 반환 시간
+  ### FCFS (First Come First Served)
+  - [FCFS](https://github.com/minsubak/cpu_scheduling_simulator/blob/main/include/FCFS.h) run screen capture
 
- - 제출 기한:   
-   6/4
+  ![image](https://github.com/minsubak/cpu_scheduling_simulator/assets/54968879/0cbd3542-b6d2-4a98-90fe-778d3f125e8c)
 
- - 보고서 내용:    
-   팀 구성, 팀원 역할, 개발언어, UI, 함수/클래스 다이어그램, 개발일정 등
+  ### SJF (Shortest Job First)
+  - [SJF](https://github.com/minsubak/cpu_scheduling_simulator/blob/main/include/SJF.h) run screen capture
 
- - 제출 파일:   
-   최종 보고서, 소스코드, 실행파일 제출
-   팀 구성, 님원 역할, 개발언어, 함수/클래스 구성도/다이어그램, 자료구조/주요변수 설명, 
-   각 알고리즘 핵심 부분코드 설명, 개발한 UI 특징, 각 알고리즘 실행 결과 캡쳐 및 설명
+  ![image](https://github.com/minsubak/cpu_scheduling_simulator/assets/54968879/bf78ef42-60cc-4064-9708-1e13807a24f3)
 
- - 기타:   
-   해당 소스 코드, 파일은 VScode, UTF-8 환경에서 작성
-   폰트 오류 발생 시 인코딩을 UTF-8로 변경
+  ### HRN (Hightest Response-ratio Next)
+  - [HRN](https://github.com/minsubak/cpu_scheduling_simulator/blob/main/include/HRN.h) run screen capture
 
- - 제작자: 민도우(박민수)
+  ![image](https://github.com/minsubak/cpu_scheduling_simulator/assets/54968879/78c1ff16-41ee-41bb-83af-57592484bbe6)
 
-# cpu_scheduler
+  ### NPP (Non-Preemption Priority)
+  - [NPP](https://github.com/minsubak/cpu_scheduling_simulator/blob/main/include/NPP.h) run screen capture
+
+  ![image](https://github.com/minsubak/cpu_scheduling_simulator/assets/54968879/a71d95b1-c7a0-4b5c-bf6b-a4ba55a8ef85)
+
+  ### PP (Preemption Priority)
+  - [PP](https://github.com/minsubak/cpu_scheduling_simulator/blob/main/include/PP.h) run screen capture
+
+  ![image](https://github.com/minsubak/cpu_scheduling_simulator/assets/54968879/4b58ead0-c425-42bc-be1a-5f7afe9e664c)
+
+  ### RR (Round-Robin)
+  - [RR](https://github.com/minsubak/cpu_scheduling_simulator/blob/main/include/RR.h) run screen capture
+
+  ![image](https://github.com/minsubak/cpu_scheduling_simulator/assets/54968879/c626af01-4c6a-4457-9bc1-d48f33d73a6f)
+
+  ### SRT (Shortest Remaining Time)
+  - [SRT](https://github.com/minsubak/cpu_scheduling_simulator/blob/main/include/SRT.h) run screen capture
+
+  ![image](https://github.com/minsubak/cpu_scheduling_simulator/assets/54968879/f30202b4-d196-438a-9eae-214b172d4a81)
+
+ ## Anything else
+ - IDE: Visual Studio Code, MSYS2
+ - encoding: UTF-8
+
+ ## Contributor or referencer   
+ Personal: Contributor
+ + [Jaedeok Kim](https://github.com/jdeokkim)
+ + [Dennis Ko](https://github.com/dennis0324)
+
+ Oranization: Referencer
+ + [6PM](https://github.com/6pm-crew)
+ + [Raylib](https://www.raylib.com/index.html)
