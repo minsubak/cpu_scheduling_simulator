@@ -46,7 +46,7 @@
 
 // card size
 const Rectangle card_bound = {
-    .x = 60, .y = 0, .width = 10, .y = 16
+    .x = 0, .y = 0, .width = 10, .y = 16
 };
 
 /**

@@ -3,7 +3,7 @@
  * @author  Mindou (minsu5875@naver.com)
  * @brief   basic queue structure / edit for CPU scheduler simulator
  * @version 0.1
- * @date    (last update: 2023-05-09)
+ * @date    (last update: 2023-05-31)
  * 
  * @copyright Copyright (c) 2022 Minsu Bak
  * 
@@ -22,7 +22,7 @@
  * @brief queue.h variable info
  * 
  *  type        name        pointer     info
- *  #define     MAX       n           queue storage size
+ *  #define     MAX         n           queue storage size
  *  int         front       n           queue front data flag
  *  int         rear        n           queue rear data flag
  *  Process     queue       y           structre queue array for Process data storage

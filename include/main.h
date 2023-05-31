@@ -3,7 +3,7 @@
  * @author  Mindou (minsu5875@naver.com)
  * @brief   external & user define library & etc. function/variable package header
  * @version 0.1
- * @date    (first date: 2023-05-08)
+ * @date    (first date: 2023-05-08, last date: 2023-05-23)
  * 
  * @copyright Copyright (c) 2023 Minsu Bak
  * 
@@ -17,6 +17,7 @@
 
 // external library & user define library
 #include "raylib.h"
+#include "image.h"
 
 /**
  * @brief main.h variable info
@@ -27,7 +28,6 @@
  *  #define     SCREEN_H        n           screen size for height
  *  #define     BTN_W           n           button size for width
  *  #define     BTN_H           n           button size for height
- *  bool        FILE_NOT_FOUND  n           file find flag (default: false)
  *  int         btnClickFlag    y           define click flag for each buttons
  * 
  */
@@ -37,9 +37,20 @@
 #define SCREEN_H            600     // screen size: height
 #define BTN_W               100     // button size: width
 #define BTN_H               62      // button size: height
+#define QAUNTUM             2       // default time quantum
+#define P_COUNT             5       // default process count
+#define P_PARAM             4       // default process parameters count
 
-bool    FILE_NOT_FOUND = false;     // file find flag
-int     btnClickFlag[7];            // define click flag for each buttons
+int btnClickFlag[7];                // define click flag for each buttons
+
+// process default data to be used by the simulator
+int pInfo[P_COUNT][P_PARAM] = {
+    {0, 0, 10, 3}, // process 0, arrival 0, burst 10, priority 3
+    {1, 1, 28, 2}, // process 1, arrival 1, burst 28, priority 2
+    {2, 2,  6, 4}, // process 2, arrival 2, burst  6, priority 4
+    {3, 3,  4, 1}, // process 3, arrival 3, burst  4, priority 1
+    {4, 4, 14, 2}  // process 4, arrival 4, burst 14, priority 2
+};
 
 // button color flag
 const Color colorTag[] = {
@@ -55,8 +66,8 @@ const Color colorTag[] = {
 
 // logo position
 const Rectangle logo_position[] = { 
-    {.x = SCREEN_W * 0.7f , .y = SCREEN_H * 0.8f, .width = 128, .height = 128},
-    {.x = SCREEN_W * 0.85f, .y = SCREEN_H * 0.8f, .width = 96 , .height = 96 }
+    {.x = SCREEN_W * 0.70f, .y = SCREEN_H * 0.8f, .width = 128, .height = 128},
+    {.x = SCREEN_W * 0.83f, .y = SCREEN_H * 0.8f, .width = 96 , .height = 96 }
 };
 
 // script array
