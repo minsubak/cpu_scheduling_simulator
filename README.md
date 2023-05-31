@@ -3,6 +3,7 @@
  If you want TUI [version](https://github.com/minsubak/cpu_scheduling_simulator/tree/tui) <== here   
  ## INDEX   
    [How to Download](#how-to-download)   
+   [How to run](#how-to-run)
    [Algorithm list](#algorithm-list)   
    [Anything else](#anything-else)   
    [Contributor or Referencer](#contributor-or-referencer)
@@ -11,6 +12,12 @@
    - click the download button at the top of the page or run this command on a terminal that supports git
    ```
    git clone github.com/minsubak/cpu_scheduling_simulator.git
+   ```
+
+ ## How to run
+   - run this command on a terminal (recommanded MSYS2)
+   ```
+   make clean && make && ./bin/play.exe
    ```
    
  ## Algorithm List
