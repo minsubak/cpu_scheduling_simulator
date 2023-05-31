@@ -59,6 +59,6 @@
  + [Jaedeok Kim](https://github.com/jdeokkim)
  + [Dennis Ko](https://github.com/dennis0324)
 
- Oranization: Referencer
+ Organization: Referencer
  + [6PM](https://github.com/6pm-crew)
  + [Raylib](https://www.raylib.com/index.html)
