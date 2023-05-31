@@ -11,11 +11,10 @@
 
 # 빌드 결과물이 저장된 폴더
 **/.vs/
-**/bin/
+**/bin/*.exe
 **/build/
 **/**/Debug/
 **/**/Release/
 
 # 실행 파일
 *.exe
-**/bin/*.exe
