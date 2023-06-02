@@ -1,4 +1,5 @@
 main.exe
 .vscode/
-**/*.o
-lib
+src/*.o
+bin/*.exe
+lib/

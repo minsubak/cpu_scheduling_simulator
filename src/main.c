@@ -1,10 +1,10 @@
 /**
  * @file    main.c
  * @author  Mindou (minsu5875@naver.com)
- * @brief   Operating System-Term Project: CPU_Scheduler Simulator
+ * @brief   Operating System-Term Project: CPU Scheduler Simulator
  *          (text-based user interface version)
- * @version beta 0.1
- * @date    (first date: 2023-04-26, last date: 23-05-28)
+ * @version beta 0.1.1
+ * @date    (first date: 2023-04-26, last date: 23-05-31)
  * 
  * @copyright Copyright (c) 2023 Minsu Bak
  * 
@@ -35,7 +35,7 @@ int main() {
     
     // search and load "data.txt" files with process data
 
-    FILE *fp = fopen("data.txt", "r");
+    FILE *fp = fopen("src/data.txt", "r");
     if(fp == NULL) error("file not found");
     else printf("file found!\n\n");
 
