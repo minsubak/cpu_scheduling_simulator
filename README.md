@@ -3,7 +3,7 @@
  If you want [TUI version](https://github.com/minsubak/cpu_scheduling_simulator/tree/tui) <== here   
  ## INDEX   
    [How to Download](#how-to-download)   
-   [How to run](#how-to-run)
+   [How to run](#how-to-run)   
    [Algorithm list](#algorithm-list)   
    [Anything else](#anything-else)   
    [Contributor or Referencer](#contributor-or-referencer)
