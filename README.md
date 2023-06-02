@@ -17,7 +17,9 @@
  ## How to run
    - run this command on a terminal (recommanded MSYS2)
    ```
-   make clean && make && ./bin/play.exe
+   make clean
+   make
+   ./bin/play.exe
    ```
    
  ## Algorithm List
