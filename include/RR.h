@@ -108,7 +108,7 @@ void RR(Process *p, int n, int t, int q, Texture2D card) {
                 TraceLog(LOG_INFO, "dispatch:\tt: %2d, p: %2d, w: %2d\n", time, temp->processID, temp->waiting);
         }
 
-        // 
+        // timeout & dispatch new PCB: if the present task execute and q variable is same
         if(temp->execute == q) {
             if(CHECK) // debug
                 TraceLog(LOG_INFO, "timeout:\tt: %2d, p: %2d, w: %2d\n", time, temp->processID, temp->waiting);
