@@ -120,7 +120,7 @@ Process peek(QueueType *q) {
  * @brief   sort processes in the queue using with qsort()
  * 
  * @param q pointer for queue structure
- * @param compare 
+ * @param compare compare target
  */
 void sort(QueueType *q, int(*compare)(const void* a, const void* b)) {
 

@@ -24,12 +24,11 @@
  *  
  *  type        name        pointer info
  *  #define     CHECK       n       debug flag for process status
- *  Rectangle   card_bound  n       card size
  *  int         processID   n       process no.
  *  int         arrival     n       process arrival time
  *  int         burst       n       process burst time(equal remain, but not using calulate)
  *  int         remain      n       process task remain time(equal burst, but using calculate)
- *  int         priority     n       process priority
+ *  int         priority    n       process priority
  *  int         waiting     n       record process waiting time
  *  int         timeout     n       record process time-out time
  *  int         execute     n       record process execute time
@@ -43,11 +42,6 @@
  */
 
 #define CHECK   false
-
-// card size
-const Rectangle card_bound = {
-    .x = 0, .y = 0, .width = 10, .y = 16
-};
 
 /**
  * @brief structure for process
@@ -85,7 +79,7 @@ void draw_everything(Process *p, Process *g, Texture2D texture, int t, int n, ch
         // draw textrue, texture size, draw position, reference point, rotation, color
         DrawTexturePro(
         texture,\
-        card_bound,\
+        (Rectangle) {.x = 0, .y = 0, .width = 10, .y = 16},\
         (Rectangle) {SCREEN_W * 0.1 + 103 + (i * 12), 140, 10, 16},\
         (Vector2) { 0, 0 },\
         0,\

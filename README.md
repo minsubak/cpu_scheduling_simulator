@@ -1,6 +1,6 @@
 # CPU scheduling simulator (with raylib)
  Update: 31/05/2023   
- If you want TUI [version](https://github.com/minsubak/cpu_scheduling_simulator/tree/tui) <== here   
+ If you want [TUI version](https://github.com/minsubak/cpu_scheduling_simulator/tree/tui) <== here   
  ## INDEX   
    [How to Download](#how-to-download)   
    [How to run](#how-to-run)

@@ -54,7 +54,6 @@ int pInfo[P_COUNT][P_PARAM] = {
 
 // button color flag
 const Color colorTag[] = {
-
     {  26,  26,  26, 255}, // dark gray
     {  50,  50,  50, 255}, // white
     { 230,  41,  55, 255}, // red
