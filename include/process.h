@@ -79,7 +79,7 @@ void draw_everything(Process *p, Process *g, Texture2D texture, int t, int n, ch
         // draw textrue, texture size, draw position, reference point, rotation, color
         DrawTexturePro(
         texture,\
-        (Rectangle) {.x = 0, .y = 0, .width = 10, .y = 16},\
+        (Rectangle) {.x = 0, .y = 0, .width = 10, .height = 16},\
         (Rectangle) {SCREEN_W * 0.1 + 103 + (i * 12), 140, 10, 16},\
         (Vector2) { 0, 0 },\
         0,\
