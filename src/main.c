@@ -104,8 +104,8 @@ int main(void) {
                 if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
                     
                     // initalize button click flags
-                    for(int i = 0; i < 7; i++)
-                        btnClickFlag[i] = 0;
+                    for(int j = 0; j < 7; j++)
+                        btnClickFlag[j] = 0;
 
                     // change the flag corresponding to the clicked button
                     btnClickFlag[i] = 1;      
