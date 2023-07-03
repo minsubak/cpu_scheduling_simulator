@@ -11,7 +11,7 @@
                 "_UNICODE"
             ],
             "windowsSdkVersion": "10.0.22000.0",
-            "compilerPath": "cl.exe",
+            "compilerPath": "C:/msys64/mingw64/bin/gcc.exe",
             "cStandard": "c17",
             "cppStandard": "c++17"
         }

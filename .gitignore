@@ -1,6 +1,7 @@
 # 백업 파일과 설정 파일
 *.bak
 *.manifest
+.vscode/
 
 # 오브젝트 파일
 *.o
