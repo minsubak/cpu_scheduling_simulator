@@ -20,6 +20,7 @@
    library build
    ```
    cd lib/raylib-slim/src
+   cd ../../..
    make -j`nproc`
    ```
    make execute file
