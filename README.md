@@ -16,6 +16,7 @@
 
  ## How to run
    - run this command on a terminal (recommanded MSYS2)
+   
    library build
    ```
    cd lib/raylib-slim/src
